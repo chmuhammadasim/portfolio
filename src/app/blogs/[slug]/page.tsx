@@ -4,6 +4,9 @@ import { getBlogPost } from "@/lib/blog-data";
 import { BlogPostingJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import CopyLinkButton from "@/components/CopyLinkButton";
 
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
 type Props = {
   params: Promise<{ slug: string }>;
 };

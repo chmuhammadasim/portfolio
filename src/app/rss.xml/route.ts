@@ -1,5 +1,7 @@
 import { blogPosts } from "@/lib/blog-data";
 
+export const runtime = "edge";
+
 export async function GET() {
   const baseUrl = "https://chmuhammadasim.site";
 
