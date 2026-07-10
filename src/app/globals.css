@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0f;
+  --foreground: #e0e0e0;
+  --terminal-green: #00ff41;
+  --cyber-blue: #00d4ff;
+  --cyber-purple: #b44dff;
+  --matrix-dark: #0d1117;
+  --neon-pink: #ff2d95;
 }
 
 @theme inline {
@@ -11,17 +15,142 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-terminal-green: var(--terminal-green);
+  --color-cyber-blue: var(--cyber-blue);
+  --color-cyber-purple: var(--cyber-purple);
+  --color-neon-pink: var(--neon-pink);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Matrix rain effect canvas styling */
+#matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* Glitch text animation */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-clip {
+  0%, 100% { clip-path: inset(0 0 90% 0); }
+  20% { clip-path: inset(80% 0 0 0); }
+  40% { clip-path: inset(40% 0 60% 0); }
+  60% { clip-path: inset(60% 0 40% 0); }
+  80% { clip-path: inset(20% 0 80% 0); }
+}
+
+.animate-glitch {
+  animation: glitch 0.3s ease-in-out infinite;
+}
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Scanline effect */
+.scanlines::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.02) 2px,
+    rgba(0, 255, 65, 0.02) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Gradient text animation */
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
   }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+/* Neon glow utilities */
+.neon-glow-blue {
+  box-shadow: 0 0 5px rgba(0, 212, 255, 0.5),
+              0 0 20px rgba(0, 212, 255, 0.2),
+              0 0 60px rgba(0, 212, 255, 0.1);
+}
+
+.neon-glow-green {
+  box-shadow: 0 0 5px rgba(0, 255, 65, 0.5),
+              0 0 20px rgba(0, 255, 65, 0.2),
+              0 0 60px rgba(0, 255, 65, 0.1);
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 5px rgba(180, 77, 255, 0.5),
+              0 0 20px rgba(180, 77, 255, 0.2),
+              0 0 60px rgba(180, 77, 255, 0.1);
+}
+
+.neon-glow-pink {
+  box-shadow: 0 0 5px rgba(255, 45, 149, 0.5),
+              0 0 20px rgba(255, 45, 149, 0.2),
+              0 0 60px rgba(255, 45, 149, 0.1);
+}
+
+.neon-text-blue {
+  text-shadow: 0 0 7px rgba(0, 212, 255, 0.6),
+               0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+.neon-text-green {
+  text-shadow: 0 0 7px rgba(0, 255, 65, 0.6),
+               0 0 20px rgba(0, 255, 65, 0.3);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
