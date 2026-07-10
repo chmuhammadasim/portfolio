@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 type Repo = {
   id: number;
@@ -355,9 +357,11 @@ export default function Home() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
               {user?.avatar_url && (
-                <img
+                <Image
                   src={user.avatar_url}
                   alt="Profile"
+                  width={36}
+                  height={36}
                   className="w-9 h-9 rounded-full border border-emerald-500/40 neon-glow-green"
                 />
               )}
@@ -434,9 +438,11 @@ export default function Home() {
               {user?.avatar_url && (
                 <div className="relative">
                   <div className="absolute inset-0 rounded-full bg-[#00d4ff]/20 blur-xl animate-pulse" />
-                  <img
+                  <Image
                     src={user.avatar_url}
                     alt="Profile"
+                    width={112}
+                    height={112}
                     className="relative w-28 h-28 rounded-full border-2 border-[#00d4ff]/50 neon-glow-blue"
                   />
                 </div>
@@ -936,9 +942,9 @@ export default function Home() {
               <a href={user?.html_url || "#"} className="text-gray-500 hover:text-[#00ff41] transition-colors" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
-              <a href="/blogs" className="text-gray-500 hover:text-[#00d4ff] transition-colors">
+              <Link href="/blogs" className="text-gray-500 hover:text-[#00d4ff] transition-colors">
                 Blogs
-              </a>
+              </Link>
               <a href={`mailto:${user?.email || ""}`} className="text-gray-500 hover:text-purple-400 transition-colors">
                 Email
               </a>

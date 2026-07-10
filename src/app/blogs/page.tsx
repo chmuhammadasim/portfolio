@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { blogPosts, categoryInfo, type BlogPost } from "@/lib/blog-data";
+import { blogPosts, categoryInfo } from "@/lib/blog-data";
 
 export default function BlogsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
