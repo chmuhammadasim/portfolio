@@ -30,6 +30,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const categoryLabel =
+    post.category === "cyber"
+      ? "Cybersecurity"
+      : post.category === "ai"
+      ? "AI / Machine Learning"
+      : "Operating Systems";
+
+  const ogImageUrl = `/api/og?title=${encodeURIComponent(post.title)}&subtitle=${encodeURIComponent(categoryLabel)}&tags=${encodeURIComponent(post.tags.slice(0, 3).join(","))}`;
+
   return {
     title: `${post.title} | Muhammad Asim Chattha`,
     description: post.excerpt,
@@ -45,11 +54,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `https://chmuhammadasim.site/blogs/${post.slug}`,
       siteName: "ProtFolio",
       locale: "en_US",
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt,
+      images: [ogImageUrl],
     },
     alternates: {
       canonical: `https://chmuhammadasim.site/blogs/${post.slug}`,

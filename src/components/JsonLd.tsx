@@ -15,7 +15,7 @@ export function PersonJsonLd() {
       "Full Stack Developer and Cybersecurity Enthusiast specializing in penetration testing, AI/ML, operating systems, and blockchain development.",
     sameAs: [
       "https://github.com/chmuhammadasim",
-      "https://linkedin.com/in/chmuhammadasim",
+      "https://linkedin.com/in/muhammad-asim-chattha",
       "https://twitter.com/chmuhammadasim",
     ],
     jobTitle: "Software Developer & Cybersecurity Researcher",

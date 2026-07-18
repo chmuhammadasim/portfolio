@@ -1,0 +1,15 @@
+# humans.txt
+# The humans responsible for this site and technology stack
+
+/* TEAM */
+Chef / Developer: Muhammad Asim Chattha
+Contact: muhammadasimchattha [at] gmail.com
+GitHub: github.com/chmuhammadasim
+LinkedIn: linkedin.com/in/muhammad-asim-chattha
+Location: Islamabad, Pakistan
+
+/* SITE */
+Standards: HTML5, CSS3, Semantic markup
+Framework: Next.js (React), Tailwind CSS, TypeScript
+Hosted on: Cloudflare Pages
+Keywords: Software Engineering, Cybersecurity, AI/ML, Kernel hacking
