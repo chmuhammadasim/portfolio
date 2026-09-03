@@ -1,7 +1,9 @@
 import type { BlogPost } from "@/lib/blog-data";
+import type { CaseStudy } from "@/lib/projects-data";
 
 /**
  * Renders JSON-LD structured data for a Person (homepage).
+ * Only verified public information is included.
  */
 export function PersonJsonLd() {
   const jsonLd = {
@@ -12,21 +14,33 @@ export function PersonJsonLd() {
     url: "https://chmuhammadasim.site",
     image: "https://avatars.githubusercontent.com/chmuhammadasim",
     description:
-      "Full Stack Developer and Cybersecurity Enthusiast specializing in penetration testing, AI/ML, operating systems, and blockchain development.",
+      "Software developer focused on cybersecurity, secure infrastructure, backend engineering, networking, and modern web technologies.",
     sameAs: [
       "https://github.com/chmuhammadasim",
       "https://linkedin.com/in/muhammad-asim-chattha",
-      "https://twitter.com/chmuhammadasim",
     ],
-    jobTitle: "Software Developer & Cybersecurity Researcher",
+    jobTitle: "Software Developer",
+    email: "mailto:muhammadasimchattha@gmail.com",
+    workLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Islamabad",
+        addressCountry: "PK",
+      },
+    },
+    alumniOf: {
+      "@type": "CollegeOrUniversity",
+      name: "Air University, Islamabad",
+    },
     knowsAbout: [
       "Cybersecurity",
-      "Penetration Testing",
-      "Malware Analysis",
-      "Artificial Intelligence",
-      "Machine Learning",
-      "Operating Systems",
-      "Kernel Development",
+      "Privileged Access Management",
+      "DNS Security",
+      "VPN Infrastructure",
+      "Network Security",
+      "Backend Development",
+      "Web Development",
       "Blockchain",
       "Full Stack Development",
       "DevOps",
@@ -48,17 +62,13 @@ export function WebSiteJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "ProtFolio | Muhammad Asim Chattha",
+    name: "Muhammad Asim Chattha — Software Developer",
     url: "https://chmuhammadasim.site",
     description:
-      "Personal portfolio and tech blog of Muhammad Asim Chattha — software developer, cybersecurity researcher, and AI/OS enthusiast.",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: "https://chmuhammadasim.site/blogs?search={search_term_string}",
-      },
-      "query-input": "required name=search_term_string",
+      "Portfolio and technical blog of Muhammad Asim Chattha — software developer specializing in cybersecurity, secure infrastructure, backend engineering, and networking.",
+    publisher: {
+      "@type": "Person",
+      name: "Muhammad Asim Chattha",
     },
   };
 
@@ -137,6 +147,34 @@ export function BlogPostingJsonLd({ post }: { post: BlogPost }) {
     },
     wordCount: post.content.split(/\s+/).length,
     timeRequired: post.readTime.replace(" min", "M").replace(" ", ""),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+/**
+ * Renders JSON-LD structured data for a project case study.
+ */
+export function CaseStudyJsonLd({ study }: { study: CaseStudy }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    name: study.name,
+    description: study.overview,
+    url: `https://chmuhammadasim.site/projects/${study.slug}`,
+    ...(study.github ? { codeRepository: study.github } : {}),
+    author: {
+      "@type": "Person",
+      name: "Muhammad Asim Chattha",
+      url: "https://chmuhammadasim.site",
+    },
+    programmingLanguage: study.technologies,
+    dateCreated: study.year,
   };
 
   return (

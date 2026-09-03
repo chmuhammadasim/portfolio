@@ -4,20 +4,20 @@ import { blogPosts } from "@/lib/blog-data";
 import { BlogJsonLd } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Tech Blog | Muhammad Asim Chattha — Software Dev & Cybersecurity",
+  title: "Tech Blog | Muhammad Asim Chattha — Cybersecurity, Systems & AI",
   description:
-    "Deep dives into cybersecurity research, artificial intelligence, operating system internals, and low-level systems programming. No fluff — just technical content.",
+    "Engineering notes on cybersecurity, operating systems, machine learning, and secure infrastructure — written by Muhammad Asim Chattha.",
   openGraph: {
     title: "Tech Blog | Muhammad Asim Chattha",
     description:
-      "Deep dives into cybersecurity research, artificial intelligence, operating system internals, and low-level systems programming.",
+      "Engineering notes on cybersecurity, operating systems, machine learning, and secure infrastructure.",
     url: "https://chmuhammadasim.site/blogs",
-    siteName: "ProtFolio",
+    siteName: "Muhammad Asim Chattha",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/api/og?title=Tech+Blog&subtitle=Cybersecurity%2C+AI%2C+OS+Development",
+        url: "/api/og?title=Tech+Blog&subtitle=Cybersecurity%2C+Systems%2C+AI",
         width: 1200,
         height: 630,
         alt: "Tech Blog | Muhammad Asim Chattha",
@@ -28,8 +28,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Tech Blog | Muhammad Asim Chattha",
     description:
-      "Deep dives into cybersecurity research, artificial intelligence, operating system internals, and low-level systems programming.",
-    images: ["/api/og?title=Tech+Blog&subtitle=Cybersecurity%2C+AI%2C+OS+Development"],
+      "Engineering notes on cybersecurity, operating systems, machine learning, and secure infrastructure.",
+    images: ["/api/og?title=Tech+Blog&subtitle=Cybersecurity%2C+Systems%2C+AI"],
   },
   alternates: {
     canonical: "https://chmuhammadasim.site/blogs",

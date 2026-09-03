@@ -6,15 +6,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/_next/"],
-      },
-      {
-        userAgent: "GPTBot",
-        disallow: "/",
-      },
-      {
-        userAgent: "CCBot",
-        disallow: "/",
+        // Only block API endpoints; never block CSS/JS/images/static assets.
+        disallow: ["/api/", "/_next/data/"],
       },
     ],
     sitemap: "https://chmuhammadasim.site/sitemap.xml",

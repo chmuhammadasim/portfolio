@@ -29,13 +29,13 @@ export async function GET() {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Muhammad Asim Chattha — Tech Blog</title>
-    <description>Deep dives into cybersecurity, AI, and operating systems — by Muhammad Asim Chattha.</description>
+    <description>Engineering notes on cybersecurity, operating systems, machine learning, and secure infrastructure — by Muhammad Asim Chattha.</description>
     <link>${baseUrl}/blogs</link>
     <atom:link href="${baseUrl}/rss.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <image>
-      <url>${baseUrl}/favicon.ico</url>
+      <url>${baseUrl}/icon.svg</url>
       <title>Muhammad Asim Chattha — Tech Blog</title>
       <link>${baseUrl}/blogs</link>
     </image>
