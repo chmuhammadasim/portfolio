@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { PersonJsonLd, WebSiteJsonLd } from "@/components/JsonLd";
@@ -129,6 +130,18 @@ export default function RootLayout({
           href="/rss.xml"
         />
         <link rel="preconnect" href="https://avatars.githubusercontent.com" />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-0WPM8S5RV5"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-0WPM8S5RV5');
+          `}
+        </Script>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <PersonJsonLd />
