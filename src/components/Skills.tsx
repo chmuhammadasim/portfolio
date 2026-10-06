@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
+import AmbientScene from "./three/AmbientSceneLoader";
+import Tilt3D from "./three/Tilt3D";
 import { SKILL_GROUPS, SKILL_FILTERS } from "@/lib/site-data";
 
 export default function Skills() {
@@ -13,8 +15,9 @@ export default function Skills() {
       : SKILL_GROUPS.filter((group) => group.id === filter);
 
   return (
-    <section id="skills" aria-labelledby="skills-heading" className="section-pad">
-      <div className="container-site">
+    <section id="skills" aria-labelledby="skills-heading" className="section-pad relative overflow-hidden">
+      <AmbientScene variant="particles" className="opacity-40" />
+      <div className="container-site relative z-10">
         <Reveal>
           <p className="eyebrow">Skills</p>
           <h2
@@ -53,11 +56,7 @@ export default function Skills() {
         {/* Skill groups */}
         <div key={filter} className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {visibleGroups.map((group) => (
-            <div
-              key={group.id}
-              className="card p-6"
-              style={{ animation: "rise-in 0.35s cubic-bezier(0.22,1,0.36,1) both" }}
-            >
+            <Tilt3D key={group.id} className="card p-6">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted">
                 {group.label}
               </h3>
@@ -68,7 +67,7 @@ export default function Skills() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Tilt3D>
           ))}
         </div>
       </div>

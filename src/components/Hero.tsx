@@ -1,8 +1,11 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { PROFILE } from "@/lib/site-data";
 import { trackEvent } from "@/lib/analytics";
+
+const HeroScene = dynamic(() => import("./three/HeroScene"), { ssr: false });
 
 /**
  * Hero section: status badge, name, value proposition, CTAs,
@@ -54,15 +57,22 @@ export default function Hero() {
       ref={sectionRef}
       id="top"
       aria-label="Introduction"
-      className="relative overflow-hidden pt-36 pb-20 md:pt-44 md:pb-28"
+      className="relative flex min-h-[92vh] items-center overflow-hidden pt-28 pb-16 md:pt-32 md:pb-24"
     >
       {/* Grid background */}
       <div className="hero-grid pointer-events-none absolute inset-0" aria-hidden="true" />
       {/* Cursor glow */}
       <div ref={glowRef} className="hero-glow" aria-hidden="true" />
+      {/* 3D computational structure (behind, right side on desktop) */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0 opacity-40 md:left-[42%] md:opacity-100"
+        aria-hidden="true"
+      >
+        <HeroScene />
+      </div>
 
       <div className="container-site relative z-10">
-        <div className="mx-auto max-w-3xl">
+        <div className="max-w-2xl">
           {/* Status badge */}
           <p className="hero-enter" style={{ "--enter-delay": "0ms" } as React.CSSProperties}>
             <span className="inline-flex items-center gap-2.5 rounded-full border border-border bg-surface px-3.5 py-1.5 text-[13px] text-secondary">
@@ -73,22 +83,36 @@ export default function Hero() {
 
           {/* Name */}
           <h1
-            className="hero-enter mt-6 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl md:text-6xl"
-            style={{ "--enter-delay": "80ms" } as React.CSSProperties}
+            className="hero-enter mt-7 text-[clamp(2.75rem,8.5vw,6rem)] font-semibold uppercase leading-[0.92] tracking-[-0.02em] text-foreground"
+            style={{ "--enter-delay": "70ms" } as React.CSSProperties}
           >
-            {PROFILE.name}
+            <span className="block">Muhammad</span>
+            <span className="block text-gradient-brand">Asim Chattha</span>
           </h1>
+
+          {/* Instrumentation metadata */}
+          <div
+            className="hero-enter mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted"
+            style={{ "--enter-delay": "140ms" } as React.CSSProperties}
+          >
+            <span>Engineer / Security / AI / Systems</span>
+            <span className="hidden sm:inline">Pakistan</span>
+            <span className="inline-flex items-center gap-2">
+              <span className="status-dot" aria-hidden="true" />
+              Status: Online
+            </span>
+          </div>
 
           {/* Value proposition */}
           <p
-            className="hero-enter mt-5 max-w-2xl text-lg leading-relaxed text-secondary md:text-xl"
-            style={{ "--enter-delay": "160ms" } as React.CSSProperties}
+            className="hero-enter mt-6 max-w-xl text-lg leading-relaxed text-secondary md:text-xl"
+            style={{ "--enter-delay": "210ms" } as React.CSSProperties}
           >
             {PROFILE.tagline}
           </p>
           <p
-            className="hero-enter mt-4 max-w-2xl text-[15px] leading-relaxed text-muted"
-            style={{ "--enter-delay": "220ms" } as React.CSSProperties}
+            className="hero-enter mt-4 max-w-xl text-[15px] leading-relaxed text-muted"
+            style={{ "--enter-delay": "270ms" } as React.CSSProperties}
           >
             I work on privileged access management, security platforms, DNS and VPN
             infrastructure, backend systems, and security automation — currently building
@@ -105,9 +129,9 @@ export default function Hero() {
               onClick={() => trackEvent("view_work")}
               className="btn btn-primary"
             >
-              View My Work
+              Explore Work
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M12 5v14M19 12l-7 7-7-7" />
+                <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </a>
             <a
@@ -115,7 +139,7 @@ export default function Hero() {
               onClick={() => trackEvent("lets_connect")}
               className="btn btn-secondary"
             >
-              Let&apos;s Connect
+              About / Contact
             </a>
           </div>
 

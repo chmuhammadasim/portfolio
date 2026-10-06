@@ -1,4 +1,6 @@
 import Reveal from "./Reveal";
+import AmbientScene from "./three/AmbientSceneLoader";
+import Tilt3D from "./three/Tilt3D";
 import { EXPERIENCE } from "@/lib/site-data";
 
 export default function Experience() {
@@ -6,9 +8,10 @@ export default function Experience() {
     <section
       id="experience"
       aria-labelledby="experience-heading"
-      className="section-pad border-y border-border bg-surface"
+      className="section-pad relative overflow-hidden border-y border-border bg-surface"
     >
-      <div className="container-site">
+      <AmbientScene variant="grid" className="opacity-50" />
+      <div className="container-site relative z-10">
         <Reveal>
           <p className="eyebrow">Experience</p>
           <h2
@@ -31,7 +34,7 @@ export default function Experience() {
                   <span className="absolute left-0 top-2 h-3.5 w-3.5 rounded-full border-2 border-accent bg-background" />
                 </div>
 
-                <div className="card card-hover p-6 md:p-8">
+                <Tilt3D className="card p-6 md:p-8">
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                     <h3 className="text-lg font-semibold tracking-tight text-foreground">
                       {job.role}
@@ -64,7 +67,7 @@ export default function Experience() {
                       </span>
                     ))}
                   </div>
-                </div>
+                </Tilt3D>
               </article>
             </Reveal>
           ))}

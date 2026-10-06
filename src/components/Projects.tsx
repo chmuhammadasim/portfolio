@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
+import AmbientScene from "./three/AmbientSceneLoader";
 import { PROJECTS, type Project } from "@/lib/site-data";
 import { trackEvent } from "@/lib/analytics";
 
@@ -79,11 +80,24 @@ function SpotlightCard({
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
     el.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
     el.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
+    el.style.setProperty("--tilt-x", `${((0.5 - py) * 8).toFixed(2)}deg`);
+    el.style.setProperty("--tilt-y", `${((px - 0.5) * 10).toFixed(2)}deg`);
+  };
+  const handleLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    el.style.setProperty("--tilt-x", "0deg");
+    el.style.setProperty("--tilt-y", "0deg");
   };
   return (
-    <div className={`spotlight ${className}`} onMouseMove={handleMove}>
+    <div
+      className={`spotlight tilt-card ${className}`}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+    >
       {children}
     </div>
   );
@@ -92,7 +106,7 @@ function SpotlightCard({
 function FeaturedProjectCard({ project, large }: { project: Project; large?: boolean }) {
   return (
     <SpotlightCard
-      className={`card card-hover group flex h-full flex-col p-6 md:p-8 ${
+      className={`card group flex h-full flex-col p-6 md:p-8 ${
         large ? "md:col-span-2" : ""
       }`}
     >
@@ -152,7 +166,7 @@ function FeaturedProjectCard({ project, large }: { project: Project; large?: boo
 
 function CompactProjectCard({ project }: { project: Project }) {
   return (
-    <SpotlightCard className="card card-hover flex h-full flex-col p-5 md:p-6">
+    <SpotlightCard className="card flex h-full flex-col p-5 md:p-6">
       <div className="flex items-start justify-between gap-3">
         <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-accent-soft text-accent">
           <ProjectIcon category={project.category} />
@@ -205,8 +219,9 @@ export default function Projects() {
   );
 
   return (
-    <section id="projects" aria-labelledby="projects-heading" className="section-pad">
-      <div className="container-site">
+    <section id="projects" aria-labelledby="projects-heading" className="section-pad relative overflow-hidden">
+      <AmbientScene variant="particles" className="opacity-40" />
+      <div className="container-site relative z-10">
         <Reveal>
           <p className="eyebrow">Projects</p>
           <h2

@@ -30,19 +30,23 @@ export default function HomeClient({ stats }: { stats: GitHubStats }) {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
+      <div className="atmosphere" aria-hidden="true" />
+      <div className="grain" aria-hidden="true" />
       <Navbar />
-      <main id="main">
-        <Hero />
-        <About />
-        <Experience />
-        <Projects />
-        <Security />
-        <Skills />
-        <Highlights stats={stats} />
-        <Education />
-        <Contact />
-      </main>
-      <Footer />
+      <div className="relative z-10">
+        <main id="main">
+          <Hero />
+          <About />
+          <Experience />
+          <Projects />
+          <Security />
+          <Skills />
+          <Highlights stats={stats} />
+          <Education />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }

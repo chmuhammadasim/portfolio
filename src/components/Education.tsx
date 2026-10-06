@@ -1,4 +1,6 @@
 import Reveal from "./Reveal";
+import AmbientScene from "./three/AmbientSceneLoader";
+import Tilt3D from "./three/Tilt3D";
 import { EDUCATION, CERTIFICATIONS } from "@/lib/site-data";
 
 export default function Education() {
@@ -6,9 +8,10 @@ export default function Education() {
     <section
       id="education"
       aria-labelledby="education-heading"
-      className="section-pad border-y border-border bg-surface"
+      className="section-pad relative overflow-hidden border-y border-border bg-surface"
     >
-      <div className="container-site">
+      <AmbientScene variant="particles" className="opacity-40" />
+      <div className="container-site relative z-10">
         <Reveal>
           <p className="eyebrow">Education & Certifications</p>
           <h2
@@ -23,7 +26,7 @@ export default function Education() {
         <div className="mt-12 grid gap-6 md:mt-16 lg:grid-cols-2">
           {EDUCATION.map((edu, index) => (
             <Reveal key={edu.degree} delay={index * 60}>
-              <div className="card card-hover h-full p-6 md:p-8">
+              <Tilt3D className="card h-full p-6 md:p-8">
                 <div className="flex items-start justify-between gap-4">
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-accent-soft text-accent">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -38,13 +41,13 @@ export default function Education() {
                 <p className="mt-1 text-sm font-medium text-accent">{edu.university}</p>
                 <p className="mt-1 text-xs text-muted">{edu.location}</p>
                 <p className="mt-4 text-sm leading-relaxed text-secondary">{edu.note}</p>
-              </div>
+              </Tilt3D>
             </Reveal>
           ))}
 
           {/* Certifications summary card */}
           <Reveal delay={80}>
-            <div className="card h-full p-6 md:p-8">
+            <Tilt3D className="card h-full p-6 md:p-8">
               <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-accent-soft text-accent">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <circle cx="12" cy="8" r="6" />
@@ -67,7 +70,7 @@ export default function Education() {
                   </p>
                 ))}
               </div>
-            </div>
+            </Tilt3D>
           </Reveal>
         </div>
       </div>

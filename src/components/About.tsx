@@ -1,10 +1,16 @@
 import Reveal from "./Reveal";
+import AmbientScene from "./three/AmbientSceneLoader";
 import { PROFILE } from "@/lib/site-data";
 
 export default function About() {
   return (
-    <section id="about" aria-labelledby="about-heading" className="section-pad">
-      <div className="container-site">
+    <section
+      id="about"
+      aria-labelledby="about-heading"
+      className="section-pad relative overflow-hidden"
+    >
+      <AmbientScene variant="orbit" className="opacity-60" />
+      <div className="container-site relative z-10">
         <div className="grid gap-12 md:grid-cols-[1fr_1.4fr] md:gap-16">
           <Reveal>
             <div>

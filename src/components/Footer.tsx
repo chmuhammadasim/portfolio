@@ -7,8 +7,12 @@ export default function Footer() {
       <div className="container-site flex flex-col items-center justify-between gap-4 py-8 sm:flex-row">
         <div className="text-center sm:text-left">
           <p className="text-sm font-medium text-foreground">{PROFILE.name}</p>
-          <p className="mt-0.5 text-xs text-muted">
-            Software Developer · Cybersecurity · Secure Infrastructure
+          <p className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+            Software / Security / AI / Systems
+          </p>
+          <p className="mt-2 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-faint">
+            <span className="status-dot" aria-hidden="true" />
+            System status — online
           </p>
         </div>
         <nav aria-label="Footer" className="flex items-center gap-5">

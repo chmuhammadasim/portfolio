@@ -1,4 +1,6 @@
 import Reveal from "./Reveal";
+import AmbientScene from "./three/AmbientSceneLoader";
+import Tilt3D from "./three/Tilt3D";
 import { SECURITY_AREAS } from "@/lib/site-data";
 
 const AREA_DETAILS: Record<string, string> = {
@@ -25,9 +27,10 @@ export default function Security() {
     <section
       id="security"
       aria-labelledby="security-heading"
-      className="section-pad border-y border-border bg-surface"
+      className="section-pad relative overflow-hidden border-y border-border bg-surface"
     >
-      <div className="container-site">
+      <AmbientScene variant="network" className="opacity-50" />
+      <div className="container-site relative z-10">
         <Reveal>
           <p className="eyebrow">Security</p>
           <h2
@@ -46,7 +49,7 @@ export default function Security() {
         <div className="mt-12 grid gap-4 sm:grid-cols-2 md:mt-16 lg:grid-cols-4">
           {SECURITY_AREAS.map((area, index) => (
             <Reveal key={area} delay={index * 50}>
-              <div className="card card-hover h-full p-5">
+              <Tilt3D className="card h-full p-5">
                 <span className="flex h-8 w-8 items-center justify-center rounded-md bg-accent-soft text-accent">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z" />
@@ -58,7 +61,7 @@ export default function Security() {
                 <p className="mt-2 text-[13px] leading-relaxed text-muted">
                   {AREA_DETAILS[area]}
                 </p>
-              </div>
+              </Tilt3D>
             </Reveal>
           ))}
         </div>

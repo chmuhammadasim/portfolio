@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
+import AmbientScene from "./three/AmbientSceneLoader";
 import { PROFILE } from "@/lib/site-data";
 import { trackEvent } from "@/lib/analytics";
 
@@ -22,9 +23,10 @@ export default function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="section-pad"
+      className="section-pad relative overflow-hidden"
     >
-      <div className="container-site">
+      <AmbientScene variant="network" className="opacity-60" />
+      <div className="container-site relative z-10">
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
             <p className="eyebrow justify-center">Contact</p>

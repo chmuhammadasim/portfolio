@@ -1,5 +1,13 @@
 import type { NextConfig } from "next";
 
+// React 19's development runtime uses `eval` (for error/source-map handling),
+// so `next dev` requires 'unsafe-eval' in the CSP. Production builds do not
+// use eval, so the strict policy stays in place there.
+const isDev = process.env.NODE_ENV === "development";
+const scriptSrc = isDev
+  ? "'self' 'unsafe-inline' 'unsafe-eval'"
+  : "'self' 'unsafe-inline'";
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -43,10 +51,9 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            // Inline theme script + JSON-LD require 'unsafe-inline';
-            // everything else stays locked to self + GitHub CDNs.
-            value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://avatars.githubusercontent.com; font-src 'self' data:; connect-src 'self' https://api.github.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+            // Inline theme script + JSON-LD require 'unsafe-inline'; the dev
+            // server additionally needs 'unsafe-eval' for React's dev runtime.
+            value: `default-src 'self'; script-src ${scriptSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://avatars.githubusercontent.com; font-src 'self' data:; connect-src 'self' https://api.github.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`,
           },
         ],
       },
