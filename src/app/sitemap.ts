@@ -1,39 +1,71 @@
 import type { MetadataRoute } from "next";
 import { blogPosts } from "@/lib/blog-data";
-import { CASE_STUDY_SLUGS } from "@/lib/projects-data";
+import { PROJECTS } from "@/lib/projects-data";
+import { SITE_UPDATED, SITE_URL } from "@/lib/site-data";
 
+/**
+ * Complete XML sitemap. Uses stable content dates instead of
+ * `new Date()` so lastModified reflects real content changes.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://chmuhammadasim.site";
+  const updated = new Date(`${SITE_UPDATED}T00:00:00.000Z`);
 
-  // Core pages
   const corePages: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
-      lastModified: new Date(),
+      url: SITE_URL,
+      lastModified: updated,
       changeFrequency: "weekly",
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/blogs`,
-      lastModified: new Date(),
+      url: `${SITE_URL}/projects`,
+      lastModified: updated,
       changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${SITE_URL}/skills`,
+      lastModified: updated,
+      changeFrequency: "monthly",
       priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/experience`,
+      lastModified: updated,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/resume`,
+      lastModified: updated,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/github`,
+      lastModified: updated,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/blogs`,
+      lastModified: updated,
+      changeFrequency: "weekly",
+      priority: 0.85,
     },
   ];
 
-  // Project case study pages
-  const projectPages: MetadataRoute.Sitemap = CASE_STUDY_SLUGS.map((slug) => ({
-    url: `${baseUrl}/projects/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
+  const projectPages: MetadataRoute.Sitemap = PROJECTS.map((project) => ({
+    url: `${SITE_URL}/projects/${project.slug}`,
+    lastModified: updated,
+    changeFrequency: "monthly",
+    priority: project.tier === "flagship" ? 0.85 : 0.75,
   }));
 
-  // Blog post pages
   const blogPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
-    url: `${baseUrl}/blogs/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: "monthly" as const,
+    url: `${SITE_URL}/blogs/${post.slug}`,
+    lastModified: updated,
+    changeFrequency: "monthly",
     priority: 0.7,
   }));
 

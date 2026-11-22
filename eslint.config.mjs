@@ -11,6 +11,13 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      // The cyber HUD intentionally renders "//" labels as text nodes
+      // throughout the interface (section eyebrows, panel headers).
+      "react/jsx-no-comment-textnodes": "off",
+    },
+  },
 ];
 
 export default eslintConfig;

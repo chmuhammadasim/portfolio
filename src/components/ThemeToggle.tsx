@@ -2,42 +2,40 @@
 
 import { useEffect, useState } from "react";
 
-function getInitialTheme(): "dark" | "light" {
-  if (typeof document !== "undefined") {
-    const stored = document.documentElement.getAttribute("data-theme");
-    if (stored === "light" || stored === "dark") return stored;
-  }
-  return "dark";
+type Theme = "dark" | "light";
+
+function readTheme(): Theme {
+  if (typeof document === "undefined") return "dark";
+  const stored = document.documentElement.getAttribute("data-theme");
+  return stored === "light" ? "light" : "dark";
 }
 
 /**
- * Theme toggle. Persists to localStorage, animates the switch,
- * and avoids flash-of-wrong-theme (initial theme is set by an
- * inline script in the root layout before hydration).
+ * Theme toggle. The initial state is always "dark" so SSR and the first
+ * client render match; the inline bootstrap script sets the real DOM
+ * theme before paint, and this component syncs to it after hydration.
  */
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<"dark" | "light">(getInitialTheme);
+  const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
-    // Re-sync if the inline script changed it before hydration.
-    setTheme(getInitialTheme());
+    setTheme(readTheme());
   }, []);
 
-  useEffect(() => {
+  const applyTheme = (next: Theme) => {
     const root = document.documentElement;
     root.classList.add("theme-transition");
-    root.setAttribute("data-theme", theme);
+    root.setAttribute("data-theme", next);
     try {
-      localStorage.setItem("theme", theme);
+      localStorage.setItem("theme", next);
     } catch {
       /* private mode */
     }
-    const t = window.setTimeout(() => root.classList.remove("theme-transition"), 320);
-    return () => window.clearTimeout(t);
-  }, [theme]);
+    setTheme(next);
+    window.setTimeout(() => root.classList.remove("theme-transition"), 320);
+  };
 
-  const toggle = () =>
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  const toggle = () => applyTheme(theme === "dark" ? "light" : "dark");
 
   return (
     <button

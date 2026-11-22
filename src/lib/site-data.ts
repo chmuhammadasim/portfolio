@@ -1,9 +1,13 @@
 /**
  * Single source of truth for the portfolio's static content.
- * All facts come from the published resume/CV and public GitHub profile.
+ *
+ * Facts are grounded in the published resume/CV, Coursera credentials,
+ * and public GitHub activity. Nothing here invents metrics or clients.
  */
 
 export const SITE_URL = "https://chmuhammadasim.site";
+export const SITE_NAME = "Muhammad Asim Chattha";
+export const SITE_UPDATED = "2026-11-21";
 
 export const PROFILE = {
   name: "Muhammad Asim Chattha",
@@ -13,11 +17,20 @@ export const PROFILE = {
   location: "Islamabad, Pakistan",
   email: "muhammadasimchattha@gmail.com",
   phone: "+92-333-5629299",
+  githubUser: "chmuhammadasim",
   resumeUrl: "/Muhammad_Asim_Chattha_Resume.pdf",
   tagline:
-    "Software developer building secure, scalable systems across cybersecurity, infrastructure, networking, and modern web technologies.",
+    "I build secure backend systems and product-grade platforms. My work spans enterprise DNS security and privileged access management through to Next.js, Go, and Flutter applications.",
   summary:
-    "I specialize in backend systems with a security-first mindset — privileged access management, DNS and VPN infrastructure, and platform development for enterprise security products.",
+    "Software developer specializing in security platforms and backend engineering. At IotaScales I work on the Atrios security suite: DNS security, VPN management, IP address management, privileged access management, and infrastructure orchestration. Outside production work I ship full-stack products, blockchain experiments, Flutter apps, and open-source infrastructure tooling.",
+  focus: [
+    "Security platform engineering",
+    "Backend systems in Go and Node.js",
+    "Secure infrastructure & networking",
+    "Full-stack product development",
+    "Flutter mobile applications",
+    "Blockchain & smart contracts",
+  ],
   socials: {
     github: "https://github.com/chmuhammadasim",
     linkedin: "https://linkedin.com/in/muhammad-asim-chattha",
@@ -25,59 +38,77 @@ export const PROFILE = {
 } as const;
 
 export const NAV_LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Education", href: "#education" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "Projects", href: "/projects" },
+  { label: "Skills", href: "/skills" },
+  { label: "Experience", href: "/experience" },
+  { label: "GitHub", href: "/github" },
+  { label: "Blog", href: "/blogs" },
+  { label: "Contact", href: "/#contact" },
 ] as const;
+
+/* ─────────────────────────────────────────────────────────────
+   Experience
+   ───────────────────────────────────────────────────────────── */
 
 export type ExperienceItem = {
   company: string;
   role: string;
   period: string;
+  start: string;
+  end: string;
   location: string;
+  type: "Full-time" | "Internship" | "Freelance";
   description: string;
   points: string[];
   technologies: string[];
+  current?: boolean;
 };
 
-/** Verified from resume + CV. */
 export const EXPERIENCE: ExperienceItem[] = [
   {
     company: "IotaScales",
     role: "Software Developer",
     period: "Jun 2025 — Present",
-    location: "Pakistan",
+    start: "2025-06",
+    end: "present",
+    location: "Islamabad, Pakistan",
+    type: "Full-time",
+    current: true,
     description:
-      "Backend developer on the Atrios security suite — enterprise platforms for DNS security, VPN management, IPAM, privileged access, and infrastructure orchestration.",
+      "Backend developer on the Atrios security suite — enterprise platforms for DNS security, VPN management, IP address management, privileged access, and infrastructure orchestration.",
     points: [
-      "Developed backend systems for Atrios DNS Security, GenesisVPN, DragonFly, OmniPriv PAM, and Astro Dome.",
-      "Built secure, multi-tenant platform features spanning DNS filtering, policy enforcement, and access control.",
-      "Worked across networking, security, and infrastructure domains within a production platform suite.",
+      "Develop backend systems for Atrios DNS Security, GenesisVPN, DragonFly, OmniPriv PAM, and Astro Dome.",
+      "Build secure, multi-tenant platform features spanning DNS filtering, policy enforcement, access control, and audit logging.",
+      "Work across networking, security, and infrastructure domains within a production platform suite.",
     ],
-    technologies: ["Node.js", "DNS", "VPN", "PAM", "REST APIs", "Security"],
+    technologies: ["Go", "Node.js", "DNS", "VPN", "PAM", "REST APIs", "Security"],
   },
   {
-    company: "Iotascale",
+    company: "IotaScales",
     role: "Full Stack Developer Intern",
     period: "Jul 2023 — Sep 2023",
+    start: "2023-07",
+    end: "2023-09",
     location: "Islamabad, Pakistan",
+    type: "Internship",
     description:
-      "Built Weathery, a weather-forecast single-page application with the MEAN stack, deployed on Google Cloud Platform.",
+      "Built Weathery, a weather-forecast single-page application on the MEAN stack, deployed on Google Cloud Platform.",
     points: [
       "Developed the Weathery SPA using Angular + RxJS with MongoDB Atlas for storage.",
       "Created REST APIs and integrated external weather data services.",
       "Deployed and operated the application on GCP.",
     ],
-    technologies: ["Angular", "Node.js", "Express", "MongoDB", "RxJS", "GCP"],
+    technologies: ["Angular", "RxJS", "Node.js", "Express", "MongoDB", "GCP"],
   },
   {
     company: "Fazaia Medical College",
     role: "Flutter Developer",
     period: "Jun 2023 — Sep 2023",
+    start: "2023-06",
+    end: "2023-09",
     location: "Islamabad, Pakistan",
+    type: "Internship",
     description:
       "Built the MOCA Test application for cognitive assessment, used in a clinical healthcare setting.",
     points: [
@@ -90,7 +121,11 @@ export const EXPERIENCE: ExperienceItem[] = [
     company: "Freelance",
     role: "Software Developer",
     period: "2022 — Present",
+    start: "2022-01",
+    end: "present",
     location: "Remote",
+    type: "Freelance",
+    current: true,
     description:
       "Independent software development for healthcare, e-commerce, and education clients.",
     points: [
@@ -102,315 +137,570 @@ export const EXPERIENCE: ExperienceItem[] = [
   },
 ];
 
-export type Project = {
-  slug: string;
-  name: string;
-  category: "cybersecurity" | "infrastructure" | "web" | "blockchain" | "mobile";
+/* ─────────────────────────────────────────────────────────────
+   Capability domains (homepage + skills page)
+   ───────────────────────────────────────────────────────────── */
+
+export type Capability = {
+  id: string;
+  title: string;
   tagline: string;
   description: string;
-  problem: string;
-  solution: string;
-  features: string[];
   technologies: string[];
-  github?: string;
-  featured: boolean;
-  hasCaseStudy: boolean;
-  year: string;
+  href: string;
+  icon: "shield" | "server" | "layers" | "network";
 };
 
-/** Verified from resume + CV + GitHub. */
-export const PROJECTS: Project[] = [
+export const CAPABILITIES: Capability[] = [
   {
-    slug: "omnipriv-pam",
-    name: "OmniPriv PAM",
-    category: "cybersecurity",
-    tagline: "Privileged Access Management platform",
+    id: "security",
+    title: "Security Platform Engineering",
+    tagline: "Defense built into the product",
     description:
-      "Enterprise PAM platform for credential vaulting, role-based access control, session monitoring, and audit logging.",
-    problem:
-      "Organizations need controlled, audited access to privileged credentials and administrative sessions without handing out standing privileges.",
-    solution:
-      "A PAM platform that vaults credentials, enforces role-based access, monitors privileged sessions, and keeps a full audit trail.",
-    features: [
-      "Credential vaulting",
-      "Role-based access control",
-      "Session monitoring",
-      "Audit logging",
-    ],
-    technologies: ["Node.js", "REST APIs", "Access Control", "Audit Logging"],
-    featured: true,
-    hasCaseStudy: true,
-    year: "2025",
+      "Privileged access management, DNS security, endpoint security, VPN infrastructure, role-based access control, and audit logging — engineered into production platforms.",
+    technologies: ["PAM", "DNS Security", "RBAC", "Threat Intelligence", "Audit Logging"],
+    href: "/skills#security",
+    icon: "shield",
   },
   {
-    slug: "atrios-dns-security",
-    name: "Atrios DNS Security",
-    category: "cybersecurity",
-    tagline: "Enterprise DNS security platform",
+    id: "backend",
+    title: "Backend & API Systems",
+    tagline: "Services that hold under load",
     description:
-      "DNS filtering, threat intelligence integration, policy enforcement, analytics dashboards, and secure network access management.",
-    problem:
-      "DNS is a primary attack vector — enterprises need filtering, threat intelligence, and policy control at the DNS layer.",
-    solution:
-      "An enterprise DNS security platform combining filtering, threat intel feeds, policy enforcement, and analytics.",
-    features: [
-      "DNS filtering",
-      "Threat intelligence integration",
-      "Policy enforcement",
-      "Analytics dashboards",
-      "Secure network access management",
-    ],
-    technologies: ["DNS", "Node.js", "Threat Intelligence", "Analytics"],
-    featured: true,
-    hasCaseStudy: true,
-    year: "2025",
+      "Go and Node.js services, REST APIs, authentication, data pipelines, and multi-tenant platform logic — with security and observability as first-class concerns.",
+    technologies: ["Go", "Node.js", "REST", "JWT", "PostgreSQL", "Redis"],
+    href: "/skills#backend",
+    icon: "server",
   },
   {
-    slug: "genesis-vpn",
-    name: "GenesisVPN",
-    category: "infrastructure",
-    tagline: "Secure VPN management platform",
+    id: "product",
+    title: "Full-Stack Product Engineering",
+    tagline: "From schema to shipped UI",
     description:
-      "VPN platform with user provisioning, subscription management, traffic monitoring, and centralized administration.",
-    problem:
-      "Running VPN infrastructure at scale requires centralized user provisioning, subscription control, and traffic visibility.",
-    solution:
-      "A VPN management platform covering provisioning, subscriptions, monitoring, and centralized administration.",
-    features: [
-      "User provisioning",
-      "Subscription management",
-      "Traffic monitoring",
-      "Centralized administration",
-    ],
-    technologies: ["VPN", "Networking", "Node.js", "Monitoring"],
-    featured: true,
-    hasCaseStudy: true,
-    year: "2025",
+      "Next.js, React, MERN, and Flutter applications delivered end to end — case-management platforms, learning products, dashboards, and mobile apps.",
+    technologies: ["Next.js", "React", "TypeScript", "MongoDB", "Flutter", "Supabase"],
+    href: "/skills#frontend",
+    icon: "layers",
   },
   {
-    slug: "atrios-ipam",
-    name: "Atrios IPAM",
-    category: "infrastructure",
-    tagline: "IP Address Management solution",
+    id: "infrastructure",
+    title: "Infrastructure & Networking",
+    tagline: "Systems, networks, and delivery",
     description:
-      "Subnet planning, IP tracking, allocation management, and network inventory monitoring.",
-    problem:
-      "Growing networks lose track of IP allocation, leading to conflicts and poor inventory visibility.",
-    solution:
-      "An IPAM solution for subnet planning, IP tracking, allocation management, and network inventory monitoring.",
-    features: [
-      "Subnet planning",
-      "IP tracking",
-      "Allocation management",
-      "Network inventory monitoring",
-    ],
-    technologies: ["Networking", "Node.js", "REST APIs", "IPAM"],
-    featured: true,
-    hasCaseStudy: true,
-    year: "2025",
-  },
-  {
-    slug: "astro-dome",
-    name: "Astro Dome",
-    category: "infrastructure",
-    tagline: "Infrastructure management platform",
-    description:
-      "Centralized administration, monitoring, automation, and secure service orchestration for infrastructure.",
-    problem:
-      "Infrastructure sprawl makes centralized administration, monitoring, and automation hard to achieve safely.",
-    solution:
-      "An infrastructure management platform for centralized administration, monitoring, automation, and secure service orchestration.",
-    features: [
-      "Centralized administration",
-      "Monitoring",
-      "Automation",
-      "Secure service orchestration",
-    ],
-    technologies: ["Infrastructure", "Node.js", "Automation", "Monitoring"],
-    featured: true,
-    hasCaseStudy: true,
-    year: "2025",
-  },
-  {
-    slug: "theralearn",
-    name: "TheraLearn",
-    category: "web",
-    tagline: "Learning platform for children with Down syndrome",
-    description:
-      "MERN-based educational platform with gamified therapy modules, psychologist dashboards, progress tracking, blogs, and role-based management.",
-    problem:
-      "Children with Down syndrome need structured, engaging cognitive development support that therapists can track.",
-    solution:
-      "A comprehensive MERN platform with gamified therapy modules, professional dashboards, and progress tracking.",
-    features: [
-      "Gamified therapy modules",
-      "Psychologist dashboards",
-      "Progress tracking",
-      "Blogs and role-based management",
-    ],
-    technologies: ["React", "Node.js", "Express", "MongoDB", "JWT"],
-    github: "https://github.com/chmuhammadasim/TheraLearn",
-    featured: true,
-    hasCaseStudy: true,
-    year: "2024",
-  },
-  {
-    slug: "dappcord",
-    name: "Dappcord",
-    category: "blockchain",
-    tagline: "Ethereum-based communication DApp",
-    description:
-      "Decentralized communication platform using Solidity smart contracts, PoS consensus, and MetaMask wallet integration.",
-    problem:
-      "Centralized chat platforms control data — a decentralized alternative needs on-chain integrity with usable UX.",
-    solution:
-      "An Ethereum DApp with smart contracts for data integrity and MetaMask integration for seamless wallet access.",
-    features: ["Solidity smart contracts", "PoS consensus", "MetaMask integration", "Secure chat rooms"],
-    technologies: ["Solidity", "React", "Web3.js", "Ethereum"],
-    github: "https://github.com/chmuhammadasim/Discord-App-Block-Chain",
-    featured: false,
-    hasCaseStudy: false,
-    year: "2023",
-  },
-  {
-    slug: "nft-marketplace",
-    name: "NFT Marketplace",
-    category: "blockchain",
-    tagline: "Decentralized NFT trading platform",
-    description:
-      "Peer-to-peer NFT trading marketplace with Solidity contracts for ownership and royalties, and MetaMask integration.",
-    problem: "NFT trading on centralized platforms undermines ownership guarantees.",
-    solution:
-      "A decentralized marketplace with on-chain ownership, royalty contracts, and wallet-based trading.",
-    features: ["NFT minting and trading", "Ownership royalties", "MetaMask integration", "Hardhat testing"],
-    technologies: ["Solidity", "Web3.js", "Hardhat", "React"],
-    github: "https://github.com/chmuhammadasim/Block-Chain-NFT-Market",
-    featured: false,
-    hasCaseStudy: false,
-    year: "2023",
-  },
-  {
-    slug: "social-media-graph-api",
-    name: "Social Media Graph API Integration",
-    category: "web",
-    tagline: "Unified backend for major social platforms",
-    description:
-      "Backend integration for Facebook, Instagram, X, Pinterest, and YouTube APIs supporting analytics, content management, and automation.",
-    problem:
-      "Working with five separate social APIs multiplies auth, rate-limit, and data-normalization complexity.",
-    solution:
-      "A unified backend integration normalizing multiple platform APIs for analytics and automation workflows.",
-    features: ["Multi-platform API integration", "Analytics", "Content management", "Automation workflows"],
-    technologies: ["Node.js", "REST APIs", "OAuth", "Graph APIs"],
-    featured: false,
-    hasCaseStudy: false,
-    year: "2024",
-  },
-  {
-    slug: "weathery",
-    name: "Weathery",
-    category: "web",
-    tagline: "Weather forecast SPA",
-    description:
-      "MEAN-stack weather application with external weather API integration, deployed on Google Cloud Platform.",
-    problem: "A responsive, API-driven weather experience with clean state management.",
-    solution:
-      "An Angular SPA with RxJS state, REST APIs, and MongoDB Atlas persistence on GCP.",
-    features: ["External weather API integration", "RxJS state management", "REST APIs", "GCP deployment"],
-    technologies: ["Angular", "Node.js", "Express", "MongoDB"],
-    featured: false,
-    hasCaseStudy: false,
-    year: "2023",
-  },
-  {
-    slug: "lapshop",
-    name: "LapShop Ecommerce",
-    category: "web",
-    tagline: "Full-featured MERN e-commerce app",
-    description:
-      "E-commerce application with product/user management, JWT auth, admin dashboard, and cloud image hosting.",
-    problem: "A complete storefront needs catalog management, auth, and admin tooling.",
-    solution:
-      "A MERN e-commerce app with JWT auth, an admin dashboard, and cloud-hosted product images.",
-    features: ["Product & user management", "JWT auth", "Admin dashboard", "Cloud image hosting"],
-    technologies: ["React", "Node.js", "MongoDB", "JWT"],
-    featured: false,
-    hasCaseStudy: false,
-    year: "2024",
-  },
-  {
-    slug: "moca-test",
-    name: "MOCA Test App",
-    category: "mobile",
-    tagline: "Cognitive assessment for clinical use",
-    description:
-      "Flutter application implementing the Montreal Cognitive Assessment, with Firebase-backed data and analytics.",
-    problem:
-      "Clinicians need a portable, reliable way to administer cognitive assessments and store results.",
-    solution:
-      "A Flutter app with GetX state management and Firebase cloud storage for the MOCA assessment.",
-    features: ["MOCA assessment workflow", "GetX state management", "Firebase storage", "Analytics"],
-    technologies: ["Flutter", "Dart", "GetX", "Firebase"],
-    featured: false,
-    hasCaseStudy: false,
-    year: "2023",
+      "IP address management, DNS, VPN, VLAN and routing fundamentals, Linux, Docker, and cloud deployment across GCP, Cloudflare, and Vercel.",
+    technologies: ["IPAM", "DNS", "VPN", "Linux", "Docker", "Cloud"],
+    href: "/skills#infrastructure",
+    icon: "network",
   },
 ];
+
+/* ─────────────────────────────────────────────────────────────
+   Skills matrix
+   ───────────────────────────────────────────────────────────── */
+
+export type SkillLevel = "production" | "working" | "familiar";
+
+export type Skill = {
+  name: string;
+  level: SkillLevel;
+  note: string;
+  projects?: string[];
+};
 
 export type SkillGroup = {
   id: string;
   label: string;
-  skills: string[];
+  short: string;
+  description: string;
+  skills: Skill[];
 };
 
-/** Verified from resume + CV. */
+export const SKILL_LEVELS: Record<
+  SkillLevel,
+  { label: string; description: string; weight: number }
+> = {
+  production: {
+    label: "Production",
+    description: "Used to build and ship production systems.",
+    weight: 3,
+  },
+  working: {
+    label: "Working",
+    description: "Used across delivered projects and prototypes.",
+    weight: 2,
+  },
+  familiar: {
+    label: "Familiar",
+    description: "Coursework, tooling, or focused experiments.",
+    weight: 1,
+  },
+};
+
 export const SKILL_GROUPS: SkillGroup[] = [
   {
     id: "languages",
     label: "Languages",
-    skills: ["JavaScript", "TypeScript", "Python", "C++", "Dart", "Solidity", "Bash", "SQL", "Go"],
+    short: "Languages",
+    description:
+      "The languages I use to build services, interfaces, mobile apps, and smart contracts.",
+    skills: [
+      {
+        name: "TypeScript",
+        level: "production",
+        note: "Typed frontends and full-stack applications with Next.js and React.",
+        projects: ["civilex", "cyber-sentinel"],
+      },
+      {
+        name: "JavaScript",
+        level: "production",
+        note: "MERN services, React apps, and Node.js backends.",
+        projects: ["theralearn", "lapshop"],
+      },
+      {
+        name: "Go",
+        level: "production",
+        note: "Security platform services, DNS tooling, and backend templates.",
+        projects: ["cyber-sentinel", "dewalla", "go-temp"],
+      },
+      {
+        name: "Dart",
+        level: "production",
+        note: "Cross-platform Flutter applications for mobile and desktop.",
+        projects: ["atrios-authenticator", "moca-test", "genesis-vpn"],
+      },
+      {
+        name: "SQL",
+        level: "production",
+        note: "Relational modeling and queries across PostgreSQL, SQL Server, and ClickHouse.",
+        projects: ["cyber-sentinel", "dewalla", "civilex"],
+      },
+      {
+        name: "Python",
+        level: "working",
+        note: "Scripting, automation, and tooling.",
+      },
+      {
+        name: "C++",
+        level: "working",
+        note: "Systems and algorithms coursework; performance-oriented problem solving.",
+      },
+      {
+        name: "Solidity",
+        level: "working",
+        note: "Smart contracts for NFT, chat, and domain-marketplace DApps.",
+        projects: ["dappcord", "nft-marketplace", "blockchain-domain-market"],
+      },
+      {
+        name: "Bash",
+        level: "working",
+        note: "Linux operations, deployment, and developer automation.",
+      },
+    ],
   },
   {
     id: "frontend",
-    label: "Frontend",
-    skills: ["React", "Next.js", "Angular", "Flutter", "Tailwind CSS", "Bootstrap", "Material UI", "HTML5/CSS3"],
+    label: "Frontend & Mobile",
+    short: "Frontend",
+    description:
+      "Interfaces shipped for the web and mobile — from dashboards to gamified learning modules.",
+    skills: [
+      {
+        name: "React",
+        level: "production",
+        note: "Component architecture for platforms, dashboards, and games.",
+        projects: ["theralearn", "civilex", "cyber-sentinel"],
+      },
+      {
+        name: "Next.js",
+        level: "production",
+        note: "App Router, server components, SEO, and production web platforms.",
+        projects: ["civilex"],
+      },
+      {
+        name: "Flutter",
+        level: "production",
+        note: "Clinical, authenticator, VPN, and mobile product apps.",
+        projects: ["atrios-authenticator", "moca-test", "genesis-vpn"],
+      },
+      {
+        name: "Angular",
+        level: "working",
+        note: "Reactive SPA development with RxJS for Weathery.",
+        projects: ["weathery"],
+      },
+      {
+        name: "Tailwind CSS",
+        level: "production",
+        note: "Design systems and responsive interfaces across web projects.",
+        projects: ["civilex", "dewalla"],
+      },
+      {
+        name: "HTML5 & CSS3",
+        level: "production",
+        note: "Semantic, responsive, accessible interface foundations.",
+        projects: ["civilex", "lapshop"],
+      },
+      {
+        name: "RxJS",
+        level: "working",
+        note: "Reactive state and async data flows in Angular.",
+        projects: ["weathery"],
+      },
+      {
+        name: "Bootstrap",
+        level: "working",
+        note: "Rapid responsive layouts for client web apps.",
+      },
+      {
+        name: "Material UI",
+        level: "working",
+        note: "Dashboard and admin interface components.",
+      },
+      {
+        name: "GetX",
+        level: "working",
+        note: "Flutter state management for the MOCA assessment app.",
+        projects: ["moca-test"],
+      },
+    ],
   },
   {
     id: "backend",
-    label: "Backend",
-    skills: ["Node.js", "Express", "MongoDB", "SQL Server", "Firebase", "REST APIs", "JWT", "Swagger"],
+    label: "Backend & APIs",
+    short: "Backend",
+    description:
+      "Services, APIs, and platform logic designed for security, clarity, and scale.",
+    skills: [
+      {
+        name: "Node.js",
+        level: "production",
+        note: "Backend services for enterprise security platforms and MERN products.",
+        projects: ["omnipriv-pam", "atrios-dns-security", "theralearn"],
+      },
+      {
+        name: "Express",
+        level: "production",
+        note: "REST API design, middleware, authentication, and service structure.",
+        projects: ["theralearn", "weathery"],
+      },
+      {
+        name: "REST APIs",
+        level: "production",
+        note: "API contracts, versioning, integration, and documentation.",
+        projects: ["social-media-graph-api", "omnipriv-pam"],
+      },
+      {
+        name: "JWT & Auth",
+        level: "production",
+        note: "Token-based authentication and least-privilege authorization.",
+        projects: ["theralearn", "lapshop", "go-temp"],
+      },
+      {
+        name: "OAuth",
+        level: "working",
+        note: "Third-party authorization flows for social platform integrations.",
+        projects: ["social-media-graph-api"],
+      },
+      {
+        name: "Socket.IO / WebSockets",
+        level: "working",
+        note: "Real-time messaging and room state in Dappcord.",
+        projects: ["dappcord"],
+      },
+      {
+        name: "Gin & GORM",
+        level: "working",
+        note: "Go HTTP services and ORM-backed persistence.",
+        projects: ["go-temp"],
+      },
+      {
+        name: "Firebase",
+        level: "production",
+        note: "Auth, cloud storage, and analytics for Flutter applications.",
+        projects: ["moca-test"],
+      },
+      {
+        name: "Supabase",
+        level: "working",
+        note: "Postgres-backed auth and data for judiciary case management.",
+        projects: ["civilex"],
+      },
+      {
+        name: "AWS S3",
+        level: "working",
+        note: "Object storage and cloud image hosting.",
+        projects: ["mern-s3-bucket"],
+      },
+    ],
+  },
+  {
+    id: "data",
+    label: "Data & Messaging",
+    short: "Data",
+    description:
+      "Databases, caches, and event streams used across security and product platforms.",
+    skills: [
+      {
+        name: "PostgreSQL",
+        level: "production",
+        note: "Relational data for security platforms and case management.",
+        projects: ["cyber-sentinel", "dewalla", "civilex"],
+      },
+      {
+        name: "MongoDB",
+        level: "production",
+        note: "Document modeling for MERN products and learning platforms.",
+        projects: ["theralearn", "weathery", "lapshop"],
+      },
+      {
+        name: "Microsoft SQL Server",
+        level: "production",
+        note: "Relational schemas, queries, and integration with .NET systems.",
+      },
+      {
+        name: "Redis",
+        level: "production",
+        note: "Caching, sessions, and high-throughput state in security services.",
+        projects: ["cyber-sentinel", "dewalla", "go-temp"],
+      },
+      {
+        name: "ClickHouse",
+        level: "working",
+        note: "Columnar analytics for telemetry, DNS logs, and security events.",
+        projects: ["cyber-sentinel", "dewalla"],
+      },
+      {
+        name: "Kafka",
+        level: "working",
+        note: "Event streaming for endpoint telemetry pipelines.",
+        projects: ["cyber-sentinel"],
+      },
+      {
+        name: "NATS",
+        level: "working",
+        note: "Lightweight messaging between DNS platform services.",
+        projects: ["dewalla"],
+      },
+      {
+        name: "SQLite",
+        level: "working",
+        note: "Embedded storage for Go services and local tooling.",
+        projects: ["go-temp"],
+      },
+    ],
   },
   {
     id: "infrastructure",
-    label: "Infrastructure",
-    skills: ["Docker", "Git", "GitHub Actions", "Nginx", "PM2", "Cloudflare", "Linux", "GCP", "Vercel", "Netlify", "Heroku"],
+    label: "DevOps & Cloud",
+    short: "DevOps",
+    description:
+      "Build, ship, and operate software with reproducible environments and sane delivery pipelines.",
+    skills: [
+      {
+        name: "Docker",
+        level: "production",
+        note: "Containerized services, builds, and application deployment.",
+        projects: ["go-temp", "cyber-sentinel"],
+      },
+      {
+        name: "Linux",
+        level: "production",
+        note: "Server operations, shell tooling, and production environments.",
+        projects: ["go-temp", "cyber-sentinel"],
+      },
+      {
+        name: "Git & GitHub Actions",
+        level: "production",
+        note: "Version control, review workflows, and CI automation.",
+        projects: ["go-temp", "civilex"],
+      },
+      {
+        name: "Nginx",
+        level: "working",
+        note: "Reverse proxying, static delivery, and TLS termination.",
+      },
+      {
+        name: "PM2",
+        level: "working",
+        note: "Node.js process management in production.",
+      },
+      {
+        name: "Cloudflare",
+        level: "working",
+        note: "DNS, edge delivery, and site security.",
+      },
+      {
+        name: "Google Cloud Platform",
+        level: "working",
+        note: "Application deployment and managed services.",
+        projects: ["weathery"],
+      },
+      {
+        name: "Vercel & Netlify",
+        level: "working",
+        note: "Frontend deployment and preview workflows.",
+      },
+      {
+        name: "Heroku",
+        level: "working",
+        note: "Application hosting for earlier projects.",
+      },
+    ],
   },
   {
     id: "security",
     label: "Security",
-    skills: ["Privileged Access Management", "DNS Security", "VPN Infrastructure", "Network Security", "Session Monitoring", "Audit Logging", "Role-Based Access Control", "Threat Intelligence"],
+    short: "Security",
+    description:
+      "The security domains I build in every day: access, DNS, VPN, monitoring, and audit.",
+    skills: [
+      {
+        name: "Privileged Access Management",
+        level: "production",
+        note: "Credential vaulting, least privilege, and privileged session control.",
+        projects: ["omnipriv-pam", "go-temp"],
+      },
+      {
+        name: "DNS Security",
+        level: "production",
+        note: "DNS filtering, blocking policy, and threat intelligence enforcement.",
+        projects: ["atrios-dns-security", "dewalla"],
+      },
+      {
+        name: "VPN Infrastructure",
+        level: "production",
+        note: "Provisioning, subscriptions, and traffic monitoring for VPN services.",
+        projects: ["genesis-vpn"],
+      },
+      {
+        name: "Role-Based Access Control",
+        level: "production",
+        note: "Policy models that map real organizational roles to permissions.",
+        projects: ["omnipriv-pam", "theralearn"],
+      },
+      {
+        name: "Session Monitoring",
+        level: "production",
+        note: "Visibility and recording for privileged and user sessions.",
+        projects: ["omnipriv-pam"],
+      },
+      {
+        name: "Audit Logging",
+        level: "production",
+        note: "Tamper-aware audit trails for privileged actions and compliance.",
+        projects: ["omnipriv-pam", "go-temp"],
+      },
+      {
+        name: "Threat Intelligence",
+        level: "production",
+        note: "Normalizing and enforcing intelligence feeds at the DNS layer.",
+        projects: ["atrios-dns-security"],
+      },
+      {
+        name: "Endpoint Security",
+        level: "production",
+        note: "Telemetry collection, policy management, and incident response.",
+        projects: ["cyber-sentinel"],
+      },
+      {
+        name: "Network Security",
+        level: "working",
+        note: "VLANs, firewalling, DHCP, and secure network design fundamentals.",
+        projects: ["packet-tracer-network"],
+      },
+      {
+        name: "Authentication & Authorization",
+        level: "production",
+        note: "JWT, OAuth, Firebase Auth, and least-privilege access patterns.",
+        projects: ["lapshop", "social-media-graph-api"],
+      },
+    ],
+  },
+  {
+    id: "networking",
+    label: "Networking & Infrastructure",
+    short: "Networking",
+    description:
+      "Network fundamentals and infrastructure products — from IP planning to DNS and VPN services.",
+    skills: [
+      {
+        name: "DNS",
+        level: "production",
+        note: "Recursive resolution, filtering policy, and PowerDNS-backed platforms.",
+        projects: ["atrios-dns-security", "dewalla"],
+      },
+      {
+        name: "PowerDNS",
+        level: "working",
+        note: "Authoritative DNS backends for managed DNS deployments.",
+        projects: ["dewalla"],
+      },
+      {
+        name: "IP Address Management",
+        level: "production",
+        note: "Subnet planning, allocation, and network inventory.",
+        projects: ["atrios-ipam"],
+      },
+      {
+        name: "TCP/IP",
+        level: "production",
+        note: "Protocol fundamentals applied to security and network products.",
+        projects: ["packet-tracer-network"],
+      },
+      {
+        name: "VLANs & DHCP",
+        level: "working",
+        note: "Segmentation and address services in simulated enterprise networks.",
+        projects: ["packet-tracer-network"],
+      },
+      {
+        name: "Routing & Switching",
+        level: "working",
+        note: "Cisco device configuration and network topology design.",
+        projects: ["packet-tracer-network"],
+      },
+      {
+        name: "Cisco Packet Tracer",
+        level: "working",
+        note: "Enterprise network simulation and validation.",
+        projects: ["packet-tracer-network"],
+      },
+      {
+        name: "Infrastructure Automation",
+        level: "production",
+        note: "Monitoring, automation, and secure service orchestration.",
+        projects: ["astro-dome"],
+      },
+    ],
   },
 ];
 
 export const SKILL_FILTERS = [
-  { id: "all", label: "All" },
-  { id: "languages", label: "Languages" },
-  { id: "frontend", label: "Frontend" },
-  { id: "backend", label: "Backend" },
-  { id: "security", label: "Security" },
-  { id: "infrastructure", label: "Infrastructure" },
-] as const;
+  { id: "all", label: "All skills" },
+  ...SKILL_GROUPS.map((group) => ({ id: group.id, label: group.short })),
+];
 
+export const TOTAL_SKILLS = SKILL_GROUPS.reduce(
+  (sum, group) => sum + group.skills.length,
+  0
+);
+
+/** Security domains used by the homepage security section. */
 export const SECURITY_AREAS = [
   "Privileged Access Management",
   "DNS Filtering & Security",
   "VPN Infrastructure",
+  "Endpoint Security & Compliance",
   "Network Security",
   "Authentication & Access Control",
   "Session Monitoring",
   "Audit Logging & Compliance",
   "Threat Intelligence",
 ] as const;
+
+/* ─────────────────────────────────────────────────────────────
+   Education & certifications
+   ───────────────────────────────────────────────────────────── */
 
 export type EducationItem = {
   degree: string;
@@ -431,46 +721,97 @@ export const EDUCATION: EducationItem[] = [
   },
 ];
 
-export type CertificationGroup = {
+export type Certification = {
+  name: string;
+  issuer: string;
+  credentialId: string;
   category: string;
-  items: string[];
+  url: string;
 };
 
-/** Verified from resume (Coursera credentials). */
-export const CERTIFICATIONS: CertificationGroup[] = [
+const COURSERA: { category: string; items: [string, string][] }[] = [
   {
     category: "Full-Stack Development",
     items: [
-      "MERN Stack Front To Back: Full Stack React, Redux & Node.js Specialization",
-      "Introduction to Front-End Development",
-      "Advanced React",
-      "React Basics",
+      ["MERN Stack Front To Back: Full Stack React, Redux & Node.js Specialization", "5ZDHBPRW4LAT"],
+      ["Introduction to Front-End Development", "FGADEBFXR2MZ"],
+      ["Advanced React", "N8FGBHFVJTDW"],
+      ["React Basics", "7DLTE79XT7BN"],
     ],
   },
   {
-    category: "DevOps",
+    category: "DevOps & Cloud",
     items: [
-      "Introduction to DevOps",
-      "Introduction to Cloud Computing",
-      "Containerization Using Docker",
-      "Containerize a Full-Stack NodeJS Application in Docker",
-      "Manage Your Versions with Git",
-      "Version Control",
+      ["Introduction to DevOps", "B4EQGXU426T4"],
+      ["Introduction to Cloud Computing", "7VYKMAFDFVFG"],
+      ["Containerization Using Docker", "FUG87A96W3KK"],
+      ["Containerize a Full-Stack NodeJS Application in Docker", "W9V5FED5LEZ7"],
+      ["Manage Your Versions with Git", "CTU0JINE2RWH"],
+      ["Version Control", "39FZ6A9M6BBB"],
     ],
   },
   {
     category: "Project Management",
     items: [
-      "Foundations of Project Management",
-      "Introduction to Agile Development and Scrum",
+      ["Foundations of Project Management", "CVBNBY3J5YSL"],
+      ["Introduction to Agile Development and Scrum", "F4ZKALU39M43"],
     ],
   },
   {
     category: "Security & Systems",
     items: [
-      "Solidity for Beginners: Write and Test Smart Contracts",
-      "C for .NET Developers",
-      "Introduction to Networks and Cisco Devices",
+      ["Solidity for Beginners: Write and Test Smart Contracts", "EXPP4DK2BQ1C"],
+      ["C for .NET Developers", "4M5JC92ZWQNN"],
+      ["Introduction to Networks and Cisco Devices", "U6K5CZDSEG63"],
     ],
   },
 ];
+
+export const CERTIFICATIONS: Certification[] = COURSERA.flatMap((group) =>
+  group.items.map(([name, credentialId]) => ({
+    name,
+    issuer: "Coursera",
+    credentialId,
+    category: group.category,
+    url: `https://coursera.org/verify/${credentialId}`,
+  }))
+);
+
+export const CERTIFICATION_GROUPS = COURSERA.map((group) => ({
+  category: group.category,
+  count: group.items.length,
+}));
+
+export const CERTIFICATION_COUNT = CERTIFICATIONS.length;
+
+/* ─────────────────────────────────────────────────────────────
+   FAQ — used on the resume page and in FAQPage structured data
+   ───────────────────────────────────────────────────────────── */
+
+export const FAQS = [
+  {
+    question: "Who is Muhammad Asim Chattha?",
+    answer:
+      "Muhammad Asim Chattha is a software developer based in Islamabad, Pakistan. He works on enterprise security platforms at IotaScales — including Atrios DNS Security, GenesisVPN, Atrios IPAM, OmniPriv PAM, and Astro Dome — and builds full-stack web, mobile, and blockchain applications.",
+  },
+  {
+    question: "What technologies does Muhammad Asim Chattha work with?",
+    answer:
+      "His core stack spans Go, Node.js, TypeScript, React, Next.js, Flutter, MongoDB, PostgreSQL, Redis, ClickHouse, Docker, and Linux. In security he works with privileged access management, DNS security, VPN infrastructure, role-based access control, session monitoring, and audit logging.",
+  },
+  {
+    question: "What is his experience with privileged access management?",
+    answer:
+      "At IotaScales he is a backend developer on OmniPriv PAM, a privileged access management platform providing credential vaulting, role-based access control, session monitoring, and audit logging. He has also contributed to goPAM, a Go project in the NetraLink Solutions organization.",
+  },
+  {
+    question: "What security platforms has he worked on?",
+    answer:
+      "He has contributed to Atrios DNS Security, OmniPriv PAM, GenesisVPN, Atrios IPAM, Astro Dome, CyberSentinel (endpoint security and compliance), and DeWall (self-hosted DNS firewall) — spanning DNS filtering, VPN management, endpoint telemetry, access control, and infrastructure orchestration.",
+  },
+  {
+    question: "Is Muhammad Asim Chattha available for work?",
+    answer:
+      "He is open to conversations about backend engineering, security platform development, and full-stack product work. The fastest way to reach him is email at muhammadasimchattha@gmail.com or LinkedIn.",
+  },
+] as const;

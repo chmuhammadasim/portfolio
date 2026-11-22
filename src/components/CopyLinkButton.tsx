@@ -1,5 +1,7 @@
 "use client";
+
 import { useState } from "react";
+import { SITE_URL } from "@/lib/site-data";
 
 export default function CopyLinkButton({ slug }: { slug: string }) {
   const [copied, setCopied] = useState(false);
@@ -7,7 +9,7 @@ export default function CopyLinkButton({ slug }: { slug: string }) {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(
-        `https://chmuhammadasim.site/blogs/${slug}`
+        `${SITE_URL}/blogs/${slug}`
       );
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);

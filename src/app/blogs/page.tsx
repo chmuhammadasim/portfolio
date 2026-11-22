@@ -1,17 +1,28 @@
 import type { Metadata } from "next";
 import BlogsClient from "./BlogsClient";
 import { blogPosts } from "@/lib/blog-data";
-import { BlogJsonLd } from "@/components/JsonLd";
+import { BlogJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { SITE_URL } from "@/lib/site-data";
 
 export const metadata: Metadata = {
-  title: "Tech Blog | Muhammad Asim Chattha — Cybersecurity, Systems & AI",
+  title: "Tech Blog — Cybersecurity, Systems & AI",
   description:
-    "Engineering notes on cybersecurity, operating systems, machine learning, and secure infrastructure — written by Muhammad Asim Chattha.",
+    "Technical notes on cybersecurity, operating systems, machine learning, and secure infrastructure — practical guidance from Muhammad Asim Chattha.",
+  keywords: [
+    "cybersecurity blog",
+    "operating systems blog",
+    "machine learning engineering blog",
+    "secure infrastructure",
+    "Linux kernel exploitation",
+    "malware analysis",
+    "LLM engineering",
+    "Muhammad Asim Chattha blog",
+  ],
   openGraph: {
     title: "Tech Blog | Muhammad Asim Chattha",
     description:
       "Engineering notes on cybersecurity, operating systems, machine learning, and secure infrastructure.",
-    url: "https://chmuhammadasim.site/blogs",
+    url: `${SITE_URL}/blogs`,
     siteName: "Muhammad Asim Chattha",
     locale: "en_US",
     type: "website",
@@ -32,7 +43,7 @@ export const metadata: Metadata = {
     images: ["/api/og?title=Tech+Blog&subtitle=Cybersecurity%2C+Systems%2C+AI"],
   },
   alternates: {
-    canonical: "https://chmuhammadasim.site/blogs",
+    canonical: `${SITE_URL}/blogs`,
   },
 };
 
@@ -40,6 +51,12 @@ export default function BlogsPage() {
   return (
     <>
       <BlogJsonLd posts={blogPosts} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: SITE_URL },
+          { name: "Blogs", url: `${SITE_URL}/blogs` },
+        ]}
+      />
       <BlogsClient posts={blogPosts} />
     </>
   );

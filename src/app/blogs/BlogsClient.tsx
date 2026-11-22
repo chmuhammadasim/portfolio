@@ -23,7 +23,19 @@ export default function BlogsClient({ posts }: { posts: BlogPost[] }) {
     <div className="min-h-screen">
       <Navbar />
 
-      <main className="container-site pt-28">
+      <main id="main" className="container-site pt-28">
+        <nav aria-label="Breadcrumb" className="mb-8">
+          <ol className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+            <li>
+              <Link href="/" className="hover:text-foreground">
+                home
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="text-accent">blogs</li>
+          </ol>
+        </nav>
+
         {/* Hero */}
         <section className="mx-auto max-w-3xl text-center">
           <p className="eyebrow justify-center">Blog</p>
@@ -31,8 +43,8 @@ export default function BlogsClient({ posts }: { posts: BlogPost[] }) {
             Engineering notes.
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-secondary">
-            Deep dives into cybersecurity, operating systems, and machine learning —
-            written from real build experience.
+            Technical notes on cybersecurity, operating systems, and machine learning —
+            practical guidance grounded in production and systems work.
           </p>
         </section>
 

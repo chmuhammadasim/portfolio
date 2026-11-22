@@ -2,14 +2,23 @@
 # The humans responsible for this site and technology stack
 
 /* TEAM */
-Chef / Developer: Muhammad Asim Chattha
+Developer: Muhammad Asim Chattha
+Role: Software Developer — Cybersecurity & Secure Infrastructure
 Contact: muhammadasimchattha [at] gmail.com
 GitHub: github.com/chmuhammadasim
 LinkedIn: linkedin.com/in/muhammad-asim-chattha
 Location: Islamabad, Pakistan
 
 /* SITE */
-Standards: HTML5, CSS3, Semantic markup
-Framework: Next.js (React), Tailwind CSS, TypeScript
+Name: chmuhammadasim.site
+Purpose: Portfolio, project case studies, skill matrix, resume, and technical blog
+Last updated: 2026-11-21
+Standards: HTML5, semantic markup, WAI-ARIA, JSON-LD structured data
+Framework: Next.js (React), TypeScript, Tailwind CSS, Three.js
+Design: Cyberfuturistic HUD system with reduced-motion and no-WebGL fallbacks
 Hosted on: Cloudflare Pages
-Keywords: Software Engineering, Cybersecurity, AI/ML, Kernel hacking
+
+/* STACK */
+Languages: Go, TypeScript, JavaScript, Python, C++, Dart, Solidity, SQL, Bash
+Platforms: Node.js, React, Next.js, Angular, Flutter, PostgreSQL, MongoDB, ClickHouse, Redis
+Security: PAM, DNS security, VPN, RBAC, session monitoring, audit logging, endpoint security

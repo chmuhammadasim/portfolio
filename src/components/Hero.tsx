@@ -1,19 +1,29 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { PROFILE } from "@/lib/site-data";
+import {
+  CERTIFICATION_COUNT,
+  PROFILE,
+  TOTAL_SKILLS,
+} from "@/lib/site-data";
+import { PROJECT_STATS } from "@/lib/projects-data";
 import { trackEvent } from "@/lib/analytics";
 
 const HeroScene = dynamic(() => import("./three/HeroScene"), { ssr: false });
 
-/**
- * Hero section: status badge, name, value proposition, CTAs,
- * and a subtle cursor-following glow (desktop, hover-capable only).
- */
+const TELEMETRY = [
+  { label: "Flagship builds", value: String(PROJECT_STATS.flagship).padStart(2, "0") },
+  { label: "Production platforms", value: String(PROJECT_STATS.production).padStart(2, "0") },
+  { label: "Technologies", value: `${TOTAL_SKILLS}` },
+  { label: "Certifications", value: `${CERTIFICATION_COUNT}` },
+];
+
 export default function Hero() {
   const [copied, setCopied] = useState(false);
   const glowRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -21,7 +31,6 @@ export default function Hero() {
     const section = sectionRef.current;
     if (!glow || !section) return;
 
-    // Only enable on fine pointers (not touch) — check once.
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!finePointer || reducedMotion) return;
@@ -31,8 +40,23 @@ export default function Hero() {
       glow.style.left = `${e.clientX - rect.left}px`;
       glow.style.top = `${e.clientY - rect.top}px`;
       glow.classList.add("is-active");
+
+      const text = textRef.current;
+      if (text) {
+        const px = (e.clientX - rect.left) / rect.width - 0.5;
+        const py = (e.clientY - rect.top) / rect.height - 0.5;
+        text.style.setProperty("--hero-ry", `${(px * 2.2).toFixed(2)}deg`);
+        text.style.setProperty("--hero-rx", `${(-py * 1.6).toFixed(2)}deg`);
+      }
     };
-    const onLeave = () => glow.classList.remove("is-active");
+    const onLeave = () => {
+      glow.classList.remove("is-active");
+      const text = textRef.current;
+      if (text) {
+        text.style.setProperty("--hero-ry", "0deg");
+        text.style.setProperty("--hero-rx", "0deg");
+      }
+    };
 
     section.addEventListener("mousemove", onMove);
     section.addEventListener("mouseleave", onLeave);
@@ -57,96 +81,126 @@ export default function Hero() {
       ref={sectionRef}
       id="top"
       aria-label="Introduction"
-      className="relative flex min-h-[92vh] items-center overflow-hidden pt-28 pb-16 md:pt-32 md:pb-24"
+      className="relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-16 md:pt-32 md:pb-24"
     >
-      {/* Grid background */}
       <div className="hero-grid pointer-events-none absolute inset-0" aria-hidden="true" />
-      {/* Cursor glow */}
+      <div className="hero-beams hidden md:block" aria-hidden="true" />
       <div ref={glowRef} className="hero-glow" aria-hidden="true" />
-      {/* 3D computational structure (behind, right side on desktop) */}
+
+      {/* 3D core */}
       <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-40 md:left-[42%] md:opacity-100"
+        className="pointer-events-none absolute inset-0 z-0 opacity-20 md:left-[40%] md:opacity-100"
         aria-hidden="true"
       >
         <HeroScene />
       </div>
 
+      {/* HUD frame around the core (desktop) */}
+      <div
+        className="pointer-events-none absolute right-[4%] top-1/2 hidden h-[440px] w-[440px] -translate-y-1/2 lg:block"
+        aria-hidden="true"
+      >
+        <div className="absolute inset-0 rounded-full border border-accent/10" />
+        <div className="absolute inset-8 rounded-full border border-dashed border-accent/15" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+        <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-accent/30 to-transparent" />
+        <span className="absolute -left-2 top-1/2 -translate-y-1/2 -rotate-90 font-mono text-[9px] uppercase tracking-[0.3em] text-accent/50">
+          neural core
+        </span>
+        <span className="absolute -right-1 top-6 font-mono text-[9px] uppercase tracking-[0.24em] text-accent/50">
+          online
+        </span>
+        <span className="absolute bottom-8 right-0 font-mono text-[9px] uppercase tracking-[0.24em] text-muted/60">
+          render 60hz
+        </span>
+      </div>
+
       <div className="container-site relative z-10">
-        <div className="max-w-2xl">
-          {/* Status badge */}
-          <p className="hero-enter" style={{ "--enter-delay": "0ms" } as React.CSSProperties}>
-            <span className="inline-flex items-center gap-2.5 rounded-full border border-border bg-surface px-3.5 py-1.5 text-[13px] text-secondary">
+        <div ref={textRef} className="hero-depth max-w-2xl">
+          {/* Status row */}
+          <div
+            className="hero-enter flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em]"
+            style={{ "--enter-delay": "0ms" } as React.CSSProperties}
+          >
+            <span className="inline-flex items-center gap-2 rounded-sm border border-accent/30 bg-accent-soft px-2.5 py-1 text-accent">
               <span className="status-dot" aria-hidden="true" />
-              {PROFILE.headline}
+              System online
             </span>
-          </p>
+            <span className="text-muted">Software Developer @ IotaScales</span>
+            <span className="hidden text-faint sm:inline">//</span>
+            <span className="hidden text-muted sm:inline">Islamabad, PK</span>
+          </div>
 
           {/* Name */}
           <h1
-            className="hero-enter mt-7 text-[clamp(2.75rem,8.5vw,6rem)] font-semibold uppercase leading-[0.92] tracking-[-0.02em] text-foreground"
-            style={{ "--enter-delay": "70ms" } as React.CSSProperties}
+            className="hero-enter mt-7 font-semibold uppercase leading-[0.9] tracking-[-0.03em] text-foreground"
+            style={
+              {
+                "--enter-delay": "70ms",
+                fontSize: "clamp(2.65rem, 8.2vw, 5.9rem)",
+              } as React.CSSProperties
+            }
           >
             <span className="block">Muhammad</span>
             <span className="block text-gradient-brand">Asim Chattha</span>
           </h1>
 
-          {/* Instrumentation metadata */}
+          {/* Role telemetry */}
           <div
-            className="hero-enter mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted"
+            className="hero-enter mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted"
             style={{ "--enter-delay": "140ms" } as React.CSSProperties}
           >
-            <span>Engineer / Security / AI / Systems</span>
-            <span className="hidden sm:inline">Pakistan</span>
-            <span className="inline-flex items-center gap-2">
-              <span className="status-dot" aria-hidden="true" />
-              Status: Online
-            </span>
+            <span className="text-secondary">Security Platforms</span>
+            <span className="text-accent/50">/</span>
+            <span className="text-secondary">Backend Systems</span>
+            <span className="text-accent/50">/</span>
+            <span className="text-secondary">Full-Stack Products</span>
+            <span className="text-accent/50">/</span>
+            <span className="text-secondary">Flutter</span>
           </div>
 
           {/* Value proposition */}
           <p
-            className="hero-enter mt-6 max-w-xl text-lg leading-relaxed text-secondary md:text-xl"
+            className="hero-enter mt-6 max-w-xl text-[17px] leading-relaxed text-secondary md:text-lg"
             style={{ "--enter-delay": "210ms" } as React.CSSProperties}
           >
             {PROFILE.tagline}
-          </p>
-          <p
-            className="hero-enter mt-4 max-w-xl text-[15px] leading-relaxed text-muted"
-            style={{ "--enter-delay": "270ms" } as React.CSSProperties}
-          >
-            I work on privileged access management, security platforms, DNS and VPN
-            infrastructure, backend systems, and security automation — currently building
-            enterprise security products at IotaScales.
           </p>
 
           {/* CTAs */}
           <div
             className="hero-enter mt-8 flex flex-wrap items-center gap-3"
-            style={{ "--enter-delay": "300ms" } as React.CSSProperties}
+            style={{ "--enter-delay": "280ms" } as React.CSSProperties}
           >
-            <a
-              href="#projects"
+            <Link
+              href="/projects"
               onClick={() => trackEvent("view_work")}
               className="btn btn-primary"
             >
-              Explore Work
+              Explore projects
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
-            </a>
-            <a
-              href="#contact"
-              onClick={() => trackEvent("lets_connect")}
-              className="btn btn-secondary"
+            </Link>
+            <Link href="/skills" className="btn btn-secondary">
+              Skill matrix
+            </Link>
+            <Link
+              href="/resume"
+              className="btn btn-ghost"
+              aria-label="View and download resume"
             >
-              About / Contact
-            </a>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 3v12M7 10l5 5 5-5M4 21h16" />
+              </svg>
+              Resume
+            </Link>
           </div>
 
           {/* Secondary links */}
           <div
-            className="hero-enter mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm"
-            style={{ "--enter-delay": "380ms" } as React.CSSProperties}
+            className="hero-enter mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-[13px]"
+            style={{ "--enter-delay": "340ms" } as React.CSSProperties}
           >
             <a
               href={PROFILE.socials.github}
@@ -179,6 +233,7 @@ export default function Hero() {
                 trackEvent("email_click");
               }}
               className="link-underline inline-flex items-center gap-1.5 text-secondary hover:text-foreground"
+              aria-live="polite"
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -187,7 +242,36 @@ export default function Hero() {
               {copied ? "Email copied" : PROFILE.email}
             </button>
           </div>
+
+          {/* Telemetry */}
+          <dl
+            className="hero-enter mt-10 grid max-w-xl grid-cols-2 gap-px overflow-hidden border border-border bg-border/60 sm:grid-cols-4"
+            style={{ "--enter-delay": "400ms" } as React.CSSProperties}
+          >
+            {TELEMETRY.map((item) => (
+              <div key={item.label} className="bg-background/80 px-4 py-3.5 backdrop-blur">
+                <dd className="font-mono text-xl font-semibold tracking-tight text-foreground">
+                  {item.value}
+                  <span className="text-accent">+</span>
+                </dd>
+                <dt className="mt-1 font-mono text-[9px] uppercase tracking-[0.14em] text-muted">
+                  {item.label}
+                </dt>
+              </div>
+            ))}
+          </dl>
         </div>
+      </div>
+
+      {/* Scroll cue */}
+      <div
+        className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
+        aria-hidden="true"
+      >
+        <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-faint">
+          scroll
+        </span>
+        <span className="h-8 w-px bg-gradient-to-b from-accent/60 to-transparent" />
       </div>
     </section>
   );

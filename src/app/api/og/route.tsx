@@ -4,8 +4,9 @@ import type { NextRequest } from "next/server";
 export const runtime = "edge";
 
 /**
- * Branded 1200x630 social preview image.
- * Minimal: dark canvas, name, subtitle, accent rule, domain.
+ * Branded 1200x630 social preview image in the site's cyber palette:
+ * deep-space canvas, cyan/violet glow, HUD grid, orbital signal, title,
+ * subtitle, and up to three tags.
  */
 export async function GET(request: NextRequest) {
   try {
@@ -15,10 +16,7 @@ export async function GET(request: NextRequest) {
       searchParams.get("subtitle") || "Software Developer & Cybersecurity";
     const tags = searchParams.get("tags") || "";
 
-    const tagList = tags
-      .split(",")
-      .filter(Boolean)
-      .slice(0, 3);
+    const tagList = tags.split(",").filter(Boolean).slice(0, 3);
 
     return new ImageResponse(
       (
@@ -28,122 +26,249 @@ export async function GET(request: NextRequest) {
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "flex-end",
-            backgroundColor: "#09090b",
-            padding: "72px 80px",
+            justifyContent: "space-between",
+            backgroundColor: "#04060d",
+            padding: "56px 72px",
             fontFamily:
               "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif",
             position: "relative",
+            overflow: "hidden",
           }}
         >
-          {/* Subtle grid */}
+          {/* Grid */}
           <div
             style={{
               position: "absolute",
               inset: 0,
               backgroundImage:
-                "linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)",
-              backgroundSize: "48px 48px",
-              maskImage:
-                "radial-gradient(ellipse 70% 60% at 20% 0%, black 30%, transparent 75%)",
-              WebkitMaskImage:
-                "radial-gradient(ellipse 70% 60% at 20% 0%, black 30%, transparent 75%)",
+                "linear-gradient(rgba(80,160,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(80,160,255,0.07) 1px, transparent 1px)",
+              backgroundSize: "46px 46px",
+              display: "flex",
             }}
           />
 
-          {/* Accent glow */}
+          {/* Cyan glow */}
           <div
             style={{
               position: "absolute",
-              top: -120,
-              left: -120,
-              width: 420,
-              height: 420,
+              top: -220,
+              left: -180,
+              width: 640,
+              height: 640,
               borderRadius: 9999,
-              background: "rgba(99, 102, 241, 0.12)",
-              filter: "blur(90px)",
+              background:
+                "radial-gradient(circle, rgba(34, 211, 238, 0.2) 0%, rgba(34, 211, 238, 0.06) 42%, rgba(4, 6, 13, 0) 70%)",
+              display: "flex",
             }}
           />
-
-          {/* Monogram */}
+          {/* Violet glow */}
           <div
             style={{
               position: "absolute",
-              top: 64,
-              left: 80,
-              width: 48,
-              height: 48,
-              borderRadius: 12,
-              border: "1px solid rgba(255,255,255,0.12)",
+              bottom: -260,
+              right: -160,
+              width: 700,
+              height: 700,
+              borderRadius: 9999,
+              background:
+                "radial-gradient(circle, rgba(167, 139, 250, 0.2) 0%, rgba(167, 139, 250, 0.06) 42%, rgba(4, 6, 13, 0) 70%)",
+              display: "flex",
+            }}
+          />
+
+          {/* Orbital signal */}
+          <div
+            style={{
+              position: "absolute",
+              top: 120,
+              right: 78,
+              width: 330,
+              height: 330,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#fafafa",
-              fontSize: 22,
-              fontWeight: 700,
             }}
           >
-            A
+            <div
+              style={{
+                position: "absolute",
+                width: 330,
+                height: 330,
+                borderRadius: 9999,
+                border: "1px solid rgba(34, 211, 238, 0.24)",
+                display: "flex",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                width: 240,
+                height: 240,
+                borderRadius: 9999,
+                border: "1px solid rgba(167, 139, 250, 0.32)",
+                display: "flex",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                width: 150,
+                height: 150,
+                borderRadius: 9999,
+                border: "1px solid rgba(244, 114, 182, 0.24)",
+                display: "flex",
+              }}
+            />
+            <div
+              style={{
+                width: 68,
+                height: 68,
+                borderRadius: 9999,
+                border: "1px solid rgba(34, 211, 238, 0.7)",
+                background:
+                  "radial-gradient(circle at 40% 35%, rgba(34,211,238,0.7), rgba(8,20,38,0.9) 70%)",
+                display: "flex",
+              }}
+            />
           </div>
 
-          {/* Domain */}
+          {/* Top bar */}
           <div
             style={{
-              position: "absolute",
-              top: 76,
-              right: 80,
               display: "flex",
               alignItems: "center",
-              gap: 10,
-              color: "#71717a",
-              fontSize: 18,
+              justifyContent: "space-between",
+              position: "relative",
             }}
           >
-            chmuhammadasim.site
-          </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <div
+                style={{
+                  width: 52,
+                  height: 52,
+                  borderRadius: 8,
+                  border: "1px solid rgba(34, 211, 238, 0.5)",
+                  backgroundColor: "rgba(34, 211, 238, 0.1)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#22d3ee",
+                  fontSize: 19,
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                AC
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ color: "#e9f2ff", fontSize: 18, fontWeight: 600 }}>
+                  Muhammad Asim Chattha
+                </div>
+                <div
+                  style={{
+                    color: "#6c7f99",
+                    fontSize: 12,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Software / Security / Systems
+                </div>
+              </div>
+            </div>
 
-          {/* Content */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 8,
-                color: "#6366f1",
-                fontSize: 16,
+                gap: 10,
+                color: "#6c7f99",
+                fontSize: 15,
+              }}
+            >
+              <div
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: 9999,
+                  backgroundColor: "#22d3ee",
+                  display: "flex",
+                }}
+              />
+              chmuhammadasim.site
+            </div>
+          </div>
+
+          {/* Content */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+              position: "relative",
+              maxWidth: 880,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                color: "#22d3ee",
+                fontSize: 14,
                 fontWeight: 600,
-                letterSpacing: "0.14em",
+                letterSpacing: "0.2em",
                 textTransform: "uppercase",
               }}
             >
-              <div style={{ width: 22, height: 2, background: "#6366f1" }} />
-              Portfolio
+              <div
+                style={{
+                  width: 28,
+                  height: 1,
+                  background: "#22d3ee",
+                  display: "flex",
+                }}
+              />
+              Portfolio // Engineering
             </div>
+
             <div
               style={{
-                color: "#fafafa",
-                fontSize: title.length > 40 ? 44 : 52,
+                color: "#e9f2ff",
+                fontSize: title.length > 42 ? 42 : 54,
                 fontWeight: 700,
-                letterSpacing: "-0.02em",
-                lineHeight: 1.15,
-                maxWidth: 1000,
+                letterSpacing: "-0.03em",
+                lineHeight: 1.08,
+                maxWidth: 900,
               }}
             >
               {title}
             </div>
-            <div style={{ color: "#a1a1aa", fontSize: 24 }}>{subtitle}</div>
+
+            <div
+              style={{
+                color: "#a3b5cc",
+                fontSize: 22,
+                lineHeight: 1.35,
+                maxWidth: 760,
+              }}
+            >
+              {subtitle}
+            </div>
 
             {tagList.length > 0 && (
-              <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
+              <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
                 {tagList.map((tag) => (
                   <span
                     key={tag}
                     style={{
                       padding: "5px 14px",
-                      borderRadius: 9999,
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      color: "#a1a1aa",
-                      fontSize: 15,
+                      borderRadius: 4,
+                      border: "1px solid rgba(34, 211, 238, 0.24)",
+                      backgroundColor: "rgba(34, 211, 238, 0.06)",
+                      color: "#9fc8d8",
+                      fontSize: 14,
+                      display: "flex",
                     }}
                   >
                     {tag}
@@ -151,6 +276,39 @@ export async function GET(request: NextRequest) {
                 ))}
               </div>
             )}
+          </div>
+
+          {/* Bottom rule */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              borderTop: "1px solid rgba(120, 190, 255, 0.14)",
+              paddingTop: 16,
+              position: "relative",
+            }}
+          >
+            <div
+              style={{
+                color: "#3d4e66",
+                fontSize: 11,
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+              }}
+            >
+              Security platforms · Backend systems · Full-stack products
+            </div>
+            <div
+              style={{
+                color: "#22d3ee",
+                fontSize: 11,
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+              }}
+            >
+              Islamabad, PK
+            </div>
           </div>
         </div>
       ),

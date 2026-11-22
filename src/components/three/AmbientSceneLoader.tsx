@@ -4,12 +4,19 @@ import dynamic from "next/dynamic";
 
 /**
  * Lazy loader for AmbientScene. Keeps `three` + @react-three/fiber out
- * of the eager homepage bundle (they load on demand, client-side only),
- * matching the code-splitting used by the hero scene.
+ * of the eager bundle (they load on demand, client-side only), matching
+ * the code-splitting used by the hero scene.
  */
 const LazyAmbientScene = dynamic(() => import("./AmbientScene"), { ssr: false });
 
-type Variant = "network" | "orbit" | "grid" | "particles";
+type Variant =
+  | "network"
+  | "orbit"
+  | "grid"
+  | "particles"
+  | "core"
+  | "stream"
+  | "constellation";
 
 export default function AmbientSceneLoader({
   variant = "particles",

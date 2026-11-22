@@ -1,52 +1,40 @@
-"use client";
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
+import TechMarquee from "@/components/TechMarquee";
 import About from "@/components/About";
-import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
-import Security from "@/components/Security";
 import Skills from "@/components/Skills";
-import Highlights from "@/components/Highlights";
+import Security from "@/components/Security";
+import GitHubShowcase from "@/components/GitHubShowcase";
+import Experience from "@/components/Experience";
 import Education from "@/components/Education";
+import BlogPreview from "@/components/BlogPreview";
 import Contact from "@/components/Contact";
-
-export type GitHubStats = {
-  repos: number;
-  followers: number;
-  totalCommits: number;
-  languages: number;
-  memberSince: string;
-};
+import type { GitHubData } from "@/lib/github";
 
 /**
- * Homepage assembler. Server data (GitHub stats) is passed in;
- * everything else comes from the static content layer.
+ * Homepage assembler. GitHub telemetry is fetched on the server and
+ * passed in; every other section reads from the static content layer.
  */
-export default function HomeClient({ stats }: { stats: GitHubStats }) {
+export default function HomeClient({ github }: { github: GitHubData }) {
   return (
     <>
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <div className="atmosphere" aria-hidden="true" />
-      <div className="grain" aria-hidden="true" />
       <Navbar />
-      <div className="relative z-10">
-        <main id="main">
-          <Hero />
-          <About />
-          <Experience />
-          <Projects />
-          <Security />
-          <Skills />
-          <Highlights stats={stats} />
-          <Education />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
+      <main id="main">
+        <Hero />
+        <TechMarquee />
+        <About />
+        <Projects />
+        <Skills />
+        <Security />
+        <GitHubShowcase data={github} />
+        <Experience />
+        <Education />
+        <BlogPreview />
+        <Contact />
+      </main>
+      <Footer />
     </>
   );
 }

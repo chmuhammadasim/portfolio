@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Orbitron } from "next/font/google";
 import "./globals.css";
-import { PersonJsonLd, WebSiteJsonLd } from "@/components/JsonLd";
+import { GlobalJsonLd } from "@/components/JsonLd";
+import ScrollProgress from "@/components/ScrollProgress";
+import { PROFILE, SITE_URL } from "@/lib/site-data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,46 +18,86 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+const orbitron = Orbitron({
+  variable: "--font-orbitron",
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  display: "swap",
+});
+
+const DEFAULT_TITLE =
+  "Muhammad Asim Chattha — Software Developer & Cybersecurity";
+const DEFAULT_DESCRIPTION =
+  "Muhammad Asim Chattha is a software developer building security platforms — DNS security, VPN, PAM — plus full-stack Go, Node.js, React, and Flutter products.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chmuhammadasim.site"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Muhammad Asim Chattha | Software Developer & Cybersecurity Engineer",
+    default: DEFAULT_TITLE,
     template: "%s | Muhammad Asim Chattha",
   },
-  description:
-    "Muhammad Asim Chattha is a software developer focused on cybersecurity, secure infrastructure, backend engineering, networking, and building scalable software systems.",
+  description: DEFAULT_DESCRIPTION,
   applicationName: "Muhammad Asim Chattha — Portfolio",
-  authors: [{ name: "Muhammad Asim Chattha", url: "https://chmuhammadasim.site" }],
-  creator: "Muhammad Asim Chattha",
+  authors: [{ name: PROFILE.name, url: SITE_URL }],
+  creator: PROFILE.name,
+  publisher: PROFILE.name,
   keywords: [
     "Muhammad Asim Chattha",
-    "Software Developer",
-    "Cybersecurity",
-    "Secure Infrastructure",
-    "Backend Developer Pakistan",
-    "Software Developer Pakistan",
-    "Software Engineer Islamabad",
-    "Privileged Access Management developer",
+    "Muhammad Asim Chattha portfolio",
+    "Muhammad Asim Chattha resume",
+    "software developer Pakistan",
+    "software engineer Islamabad",
+    "cybersecurity engineer",
+    "security platform developer",
+    "backend developer",
+    "privileged access management developer",
+    "PAM engineer",
     "DNS security",
     "VPN infrastructure",
+    "IP address management",
+    "endpoint security",
+    "Go developer",
+    "Golang backend developer",
+    "Node.js developer",
+    "Next.js developer",
+    "React developer",
+    "Flutter developer",
+    "full stack developer Islamabad",
+    "IotaScales",
+    "Atrios DNS Security",
+    "OmniPriv PAM",
+    "GenesisVPN",
+    "CyberSentinel",
+    "DeWall",
+    "Civilex",
+    "TheraLearn",
   ],
+  category: "technology",
+  classification: "Software Development, Cybersecurity, Portfolio",
+  referrer: "strict-origin-when-cross-origin",
   alternates: {
-    canonical: "https://chmuhammadasim.site",
+    canonical: SITE_URL,
     types: {
-      "application/rss+xml": "https://chmuhammadasim.site/rss.xml",
+      "application/rss+xml": `${SITE_URL}/rss.xml`,
+    },
+    languages: {
+      en: SITE_URL,
     },
   },
   openGraph: {
-    title: "Muhammad Asim Chattha | Software Developer & Cybersecurity Engineer",
+    title: DEFAULT_TITLE,
     description:
-      "Software developer focused on cybersecurity, secure infrastructure, backend engineering, and networking — building scalable, secure software systems.",
-    url: "https://chmuhammadasim.site",
-    siteName: "Muhammad Asim Chattha",
+      "Software developer focused on cybersecurity, secure infrastructure, backend engineering, and production-grade web and mobile products.",
+    url: SITE_URL,
+    siteName: PROFILE.name,
     locale: "en_US",
-    type: "website",
+    type: "profile",
+    firstName: "Muhammad Asim",
+    lastName: "Chattha",
+    username: "chmuhammadasim",
     images: [
       {
-        url: "/api/og?title=Muhammad+Asim+Chattha&subtitle=Software+Developer+%26+Cybersecurity+Engineer&tags=Cybersecurity,Secure+Infrastructure,Backend",
+        url: "/api/og?title=Muhammad+Asim+Chattha&subtitle=Software+Developer+%26+Cybersecurity+Engineer&tags=Security+Platforms,Go+%26+Node.js,Full-Stack",
         width: 1200,
         height: 630,
         alt: "Muhammad Asim Chattha — Software Developer & Cybersecurity Engineer",
@@ -64,11 +106,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Muhammad Asim Chattha | Software Developer & Cybersecurity Engineer",
+    title: DEFAULT_TITLE,
     description:
-      "Software developer focused on cybersecurity, secure infrastructure, backend engineering, and networking.",
+      "Software developer focused on cybersecurity, secure infrastructure, backend engineering, and full-stack products.",
     images: [
-      "/api/og?title=Muhammad+Asim+Chattha&subtitle=Software+Developer+%26+Cybersecurity+Engineer&tags=Cybersecurity,Secure+Infrastructure,Backend",
+      "/api/og?title=Muhammad+Asim+Chattha&subtitle=Software+Developer+%26+Cybersecurity+Engineer&tags=Security+Platforms,Go+%26+Node.js,Full-Stack",
     ],
   },
   robots: {
@@ -85,25 +127,34 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: process.env.GOOGLE_VERIFICATION_CODE || "YOUR_GOOGLE_VERIFICATION_CODE",
-  },
-  category: "technology",
-  referrer: "strict-origin-when-cross-origin",
+  ...(process.env.GOOGLE_VERIFICATION_CODE
+    ? { verification: { google: process.env.GOOGLE_VERIFICATION_CODE } }
+    : {}),
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
+  appleWebApp: {
+    capable: true,
+    title: "Asim Chattha",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "theme-color": "#04060d",
+    "application-name": "Muhammad Asim Chattha",
+    "msapplication-TileColor": "#04060d",
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
-    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#04060d" },
+    { media: "(prefers-color-scheme: light)", color: "#f3f7fd" },
   ],
   width: "device-width",
   initialScale: 1,
+  colorScheme: "dark light",
 };
 
 /**
@@ -121,7 +172,11 @@ export default function RootLayout({
     <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <noscript>
+          <style>{`.reveal{opacity:1 !important;transform:none !important;filter:none !important}`}</style>
+        </noscript>
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
         <link rel="manifest" href="/manifest.webmanifest" />
         <link
           rel="alternate"
@@ -129,10 +184,14 @@ export default function RootLayout({
           title="Muhammad Asim Chattha — Tech Blog RSS"
           href="/rss.xml"
         />
+        <link rel="author" href="/humans.txt" />
+        <link rel="me" href={PROFILE.socials.github} />
+        <link rel="me" href={PROFILE.socials.linkedin} />
         <link rel="preconnect" href="https://avatars.githubusercontent.com" />
+        <link rel="dns-prefetch" href="https://api.github.com" />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-0WPM8S5RV5"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
@@ -143,10 +202,19 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <PersonJsonLd />
-        <WebSiteJsonLd />
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} antialiased`}>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <ScrollProgress />
+        <GlobalJsonLd />
+        <div className="site-backdrop" aria-hidden="true">
+          <div className="cyber-dots" />
+          <div className="cyber-floor" />
+          <div className="cyber-scanlines" />
+        </div>
+        <div className="grain" aria-hidden="true" />
+        <div id="top" className="relative z-10">{children}</div>
       </body>
     </html>
   );
